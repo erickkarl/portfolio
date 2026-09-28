@@ -1,4 +1,4 @@
-import { JetBrains_Mono, Public_Sans, Saira_Condensed } from "next/font/google";
+import { Allura, JetBrains_Mono, Public_Sans, Saira_Condensed } from "next/font/google";
 
 const saira = Saira_Condensed({
   variable: "--font-saira",
@@ -16,5 +16,12 @@ const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
 });
 
+// Handwriting face for the intro signature.
+const allura = Allura({
+  variable: "--font-script",
+  subsets: ["latin"],
+  weight: "400",
+});
+
 /** Class names that define the --font-* variables used by globals.css. */
-export const fontVariables = `${saira.variable} ${publicSans.variable} ${jetbrains.variable}`;
+export const fontVariables = `${saira.variable} ${publicSans.variable} ${jetbrains.variable} ${allura.variable}`;

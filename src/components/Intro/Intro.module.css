@@ -1,0 +1,129 @@
+/*
+ * Timeline (ms):
+ *    200 – 2400  outline strokes draw while the ink sweeps left → right
+ *   2100 – 2800  letters fill in, flourish underlines the name
+ *   2500 – 3000  role fades in
+ *   3300 – 4000  overlay lifts away, then is removed (data-intro="off")
+ */
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding-inline: 16px;
+  background: var(--paper);
+  animation: lift 700ms cubic-bezier(0.7, 0, 0.3, 1) 3300ms forwards;
+}
+
+:global([data-intro="off"]) .intro {
+  display: none;
+}
+
+.stage {
+  width: min(92vw, 980px);
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+}
+
+.signature {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.ink {
+  font-family: var(--f-script);
+  font-size: 132px;
+  word-spacing: 0.22em;
+  fill: var(--ink);
+  fill-opacity: 0;
+  stroke: var(--ink);
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1400;
+  stroke-dashoffset: 1400;
+  animation:
+    draw 2200ms cubic-bezier(0.45, 0.05, 0.35, 1) 200ms forwards,
+    fill 700ms ease 2100ms forwards;
+}
+
+.sweep {
+  transform-box: fill-box;
+  transform-origin: left center;
+  transform: scaleX(0);
+  animation: sweep 2200ms cubic-bezier(0.45, 0.05, 0.35, 1) 200ms forwards;
+}
+
+.flourish {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 520;
+  stroke-dashoffset: 520;
+  animation: draw 600ms ease-out 2300ms forwards;
+}
+
+.role {
+  font: 500 13px/1.4 var(--f-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  opacity: 0;
+  animation: fade 500ms ease 2500ms forwards;
+}
+
+.skip {
+  position: absolute;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  appearance: none;
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font: 500 13px/1 var(--f-body);
+  color: var(--muted);
+  cursor: pointer;
+}
+.skip:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes fill {
+  to {
+    fill-opacity: 1;
+  }
+}
+@keyframes sweep {
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes fade {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes lift {
+  to {
+    opacity: 0;
+    transform: translateY(-3%);
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro {
+    display: none;
+  }
+}

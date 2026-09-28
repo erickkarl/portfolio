@@ -1,6 +1,6 @@
 # Erick Karl Volkert — Portfolio
 
-Personal portfolio laid out as an electronic component datasheet: features, a DIP-14 pinout of core skills, a key-characteristics table and a revision history of my career.
+Personal portfolio of a senior software engineer. Opens with a handwritten-signature intro, then covers what I do, the technologies I use and where I've shipped.
 
 **Live:** https://erickkarl.github.io/portfolio/ · **Components:** https://erickkarl.github.io/portfolio/storybook/
 
@@ -10,9 +10,9 @@ Built with the same stack I use at work:
 | --- | --- |
 | Next.js 16 (App Router) + React 19 | Static export of the site |
 | TypeScript | Typed content model and components |
-| CSS Modules + design tokens | Styling, light and dark themes |
+| CSS Modules + design tokens | Styling, light and dark themes, CSS-only intro animation |
 | Storybook 10 | Component catalogue with a11y checks and interaction tests |
-| Vitest + Testing Library | Unit tests for pinout logic and components |
+| Vitest + Testing Library | Tests for the intro and the tech stack |
 | GitHub Actions | CI on every branch, deploy to GitHub Pages from `main` |
 
 ## Editing content
@@ -35,12 +35,16 @@ pnpm storybook        # http://localhost:6006
 ```
 src/
   app/            layout, page, global tokens, fonts
-  components/     Pinout, CharacteristicsTable, RevisionHistory, SectionHeading (+ stories)
+  assets/tech/    technology logos (SVG)
+  components/     Intro, TechStack, Experience, SectionHeading (+ stories, tests)
   content/        profile.ts — all page content
-  lib/            pinout.ts — DIP pin numbering (tested)
 .github/workflows ci.yml, deploy.yml
 ```
 
 ## Deployment
 
 `deploy.yml` runs lint, typecheck and tests, builds the site with the Pages base path, builds Storybook into `out/storybook`, and publishes to GitHub Pages.
+
+## Credits
+
+Technology logos from [Devicon](https://devicon.dev) (MIT). Logos are trademarks of their respective owners.

@@ -1,42 +1,33 @@
-.revs {
+.timeline {
   display: grid;
 }
 
-.rev {
+.job {
+  position: relative;
   display: grid;
-  grid-template-columns: 52px 176px minmax(0, 1fr);
-  gap: 8px 24px;
-  padding-block: 24px;
+  grid-template-columns: 190px minmax(0, 1fr);
+  gap: 8px 32px;
+  padding-block: 28px;
   border-bottom: 1px solid var(--rule);
 }
-.rev:first-child {
+.job:first-child {
   padding-top: 4px;
 }
 
-.id {
-  width: 36px;
-  height: 36px;
+.when {
   display: grid;
-  place-items: center;
-  font: 500 15px/1 var(--f-mono);
-  border: 1.5px solid var(--rule-strong);
-  border-radius: 3px;
-}
-.current .id {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--paper);
-}
-
-.date {
-  font: 400 13px/1.55 var(--f-mono);
+  gap: 2px;
+  align-content: start;
+  font: 400 13px/1.5 var(--f-mono);
   color: var(--muted);
-  padding-top: 6px;
+  padding-top: 5px;
 }
-.date b {
-  display: block;
+.when b {
   font-weight: 500;
   color: var(--ink);
+}
+.current .when b {
+  color: var(--accent);
 }
 
 .body {
@@ -47,7 +38,7 @@
 }
 
 .title {
-  font: 600 25px/1.15 var(--f-display);
+  font: 600 26px/1.15 var(--f-display);
   letter-spacing: 0.01em;
 }
 .at {
@@ -71,7 +62,7 @@
 }
 .list li::before {
   content: "–";
-  color: var(--copper);
+  color: var(--accent);
 }
 
 .roles {
@@ -89,8 +80,8 @@
   letter-spacing: 0.01em;
 }
 .subDates {
-  font-family: var(--f-mono);
-  font-size: 12.5px;
+  font: 400 12.5px/1.3 var(--f-mono);
+  color: var(--muted);
 }
 
 .tags {
@@ -101,26 +92,48 @@
 }
 .tags span {
   font: 400 12px/1 var(--f-mono);
-  padding: 5px 8px;
+  padding: 5px 9px;
   border: 1px solid var(--rule);
-  border-radius: 2px;
+  border-radius: 999px;
   color: var(--muted);
 }
 
+.footnotes {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding-top: 24px;
+}
+.footnote {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  gap: 4px 32px;
+  font-size: 14.5px;
+  color: var(--muted);
+}
+.footnote dt {
+  font: 500 12px/1.6 var(--f-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.footnote dd {
+  margin: 0;
+}
+.footDates {
+  font: 400 13px/1 var(--f-mono);
+  color: var(--ink);
+  margin-right: 6px;
+}
+
 @media (max-width: 760px) {
-  .rev {
-    grid-template-columns: 44px minmax(0, 1fr);
+  .job,
+  .footnote {
+    grid-template-columns: 1fr;
   }
-  .date {
-    grid-column: 2;
-    grid-row: 1;
+  .when {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 10px;
     padding-top: 0;
-  }
-  .date b {
-    display: inline;
-    margin-right: 8px;
-  }
-  .body {
-    grid-column: 1 / -1;
   }
 }

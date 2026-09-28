@@ -1,20 +1,18 @@
 import styles from "./SectionHeading.module.css";
 
 type Props = {
-  n: number;
+  eyebrow: string;
   title: string;
   id?: string;
-  sub?: string;
 };
 
-export function SectionHeading({ n, title, id, sub }: Props) {
+export function SectionHeading({ eyebrow, title, id }: Props) {
   return (
     <div className={styles.heading}>
-      <span className={styles.n}>{n}</span>
+      <span className="eyebrow">{eyebrow}</span>
       <h2 id={id} className={styles.title}>
         {title}
       </h2>
-      {sub ? <span className={styles.sub}>{sub}</span> : null}
     </div>
   );
 }
