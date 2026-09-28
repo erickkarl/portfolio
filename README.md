@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Erick Karl Volkert — Portfolio
 
-## Getting Started
+Personal portfolio laid out as an electronic component datasheet: features, a DIP-14 pinout of core skills, a key-characteristics table and a revision history of my career.
 
-First, run the development server:
+**Live:** https://erickkarl.github.io/portfolio/ · **Components:** https://erickkarl.github.io/portfolio/storybook/
+
+Built with the same stack I use at work:
+
+| Tool | Used for |
+| --- | --- |
+| Next.js 16 (App Router) + React 19 | Static export of the site |
+| TypeScript | Typed content model and components |
+| CSS Modules + design tokens | Styling, light and dark themes |
+| Storybook 10 | Component catalogue with a11y checks and interaction tests |
+| Vitest + Testing Library | Unit tests for pinout logic and components |
+| GitHub Actions | CI on every branch, deploy to GitHub Pages from `main` |
+
+## Editing content
+
+Everything on the page comes from [`src/content/profile.ts`](src/content/profile.ts). Change the data there; the components only render it.
+
+## Scripts
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+pnpm dev              # http://localhost:3000
+pnpm test             # Vitest
+pnpm lint && pnpm typecheck
+pnpm build            # static export to ./out
+pnpm storybook        # http://localhost:6006
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+src/
+  app/            layout, page, global tokens, fonts
+  components/     Pinout, CharacteristicsTable, RevisionHistory, SectionHeading (+ stories)
+  content/        profile.ts — all page content
+  lib/            pinout.ts — DIP pin numbering (tested)
+.github/workflows ci.yml, deploy.yml
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Deployment
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`deploy.yml` runs lint, typecheck and tests, builds the site with the Pages base path, builds Storybook into `out/storybook`, and publishes to GitHub Pages.
