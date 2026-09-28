@@ -5,7 +5,7 @@ import { Intro } from "./Intro";
 const meta = {
   title: "Portfolio/Intro",
   component: Intro,
-  args: { name: profile.name, role: profile.role },
+  args: { text: profile.fullName },
   parameters: { layout: "fullscreen" },
   // Each story starts with the intro visible so the animation replays.
   beforeEach: () => {

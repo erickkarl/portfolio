@@ -1,31 +1,69 @@
-import { cleanup, render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { INTRO_SEEN_KEY, Intro, introBootScript } from "./Intro";
+import { buildTimeline } from "./typing";
+
+const NAME = "Erick Karl Volkert Alves";
+const rng = () => 0.5;
+const timeline = buildTimeline(NAME, rng);
 
 beforeEach(() => {
+  vi.useFakeTimers();
   sessionStorage.clear();
   document.documentElement.removeAttribute("data-intro");
 });
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  vi.useRealTimers();
+});
+
+const typedText = () => screen.getByTestId("intro").querySelector("p")!.textContent;
+const phase = () => screen.getByTestId("intro").dataset.phase;
 
 describe("Intro", () => {
-  it("writes the full name", () => {
-    render(<Intro name="Erick Karl Volkert" role="Senior Software Engineer" />);
-    expect(screen.getByText("Erick Karl Volkert")).toBeTruthy();
+  it("starts with only the blinking cursor", () => {
+    render(<Intro text={NAME} rng={rng} />);
+    expect(typedText()).toBe("");
+    expect(phase()).toBe("idle");
+  });
+
+  it("keeps blinking until three blinks have passed", () => {
+    render(<Intro text={NAME} rng={rng} />);
+    act(() => vi.advanceTimersByTime(timeline.typingStart - 1));
+    expect(typedText()).toBe("");
+  });
+
+  it("types the name one key at a time", () => {
+    render(<Intro text={NAME} rng={rng} />);
+    act(() => vi.advanceTimersByTime(timeline.keys[4]));
+    expect(typedText()).toBe("Erick");
+    expect(phase()).toBe("typing");
+
+    act(() => vi.advanceTimersByTime(timeline.keys.at(-1)! - timeline.keys[4]));
+    expect(typedText()).toBe(NAME);
+    expect(phase()).toBe("done");
+  });
+
+  it("opens the site when the animation ends", () => {
+    render(<Intro text={NAME} rng={rng} />);
+    act(() => vi.advanceTimersByTime(timeline.leaveAt));
+    expect(phase()).toBe("leaving");
+    act(() => vi.advanceTimersByTime(timeline.endAt - timeline.leaveAt));
+    expect(document.documentElement.getAttribute("data-intro")).toBe("off");
   });
 
   it("remembers that the visitor has seen it this session", () => {
-    render(<Intro name="Erick Karl Volkert" role="Senior Software Engineer" />);
+    render(<Intro text={NAME} rng={rng} />);
     expect(sessionStorage.getItem(INTRO_SEEN_KEY)).toBe("1");
   });
 
-  it("turns itself off when skipped", async () => {
-    const user = userEvent.setup();
-    render(<Intro name="Erick Karl Volkert" role="Senior Software Engineer" />);
+  it("can be skipped with the button or Escape", () => {
+    render(<Intro text={NAME} rng={rng} />);
+    fireEvent.click(screen.getByRole("button", { name: "Skip intro" }));
+    expect(document.documentElement.getAttribute("data-intro")).toBe("off");
 
-    await user.click(screen.getByRole("button", { name: "Skip intro" }));
-
+    document.documentElement.removeAttribute("data-intro");
+    fireEvent.keyDown(window, { key: "Escape" });
     expect(document.documentElement.getAttribute("data-intro")).toBe("off");
   });
 });

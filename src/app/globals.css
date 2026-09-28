@@ -12,7 +12,6 @@
   --f-display: var(--font-saira), "Arial Narrow", "Roboto Condensed", sans-serif;
   --f-body: var(--font-public-sans), "Helvetica Neue", Arial, system-ui, sans-serif;
   --f-mono: var(--font-jetbrains), ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  --f-script: var(--font-script), "Snell Roundhand", "Brush Script MT", cursive;
 
   color-scheme: light;
 }

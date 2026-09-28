@@ -17,12 +17,13 @@ export default function Home() {
 
   return (
     <>
-      <Intro name={profile.name} role={profile.role} />
+      <Intro text={profile.fullName} />
 
       <div className={styles.page}>
         <header className={styles.header}>
           <a href="#top" className={styles.signature} aria-label={`${profile.name}, back to top`}>
-            {profile.firstName}
+            <span className={styles.prompt}>&gt;</span> {profile.firstName.toLowerCase()}
+            <span className={styles.caret} aria-hidden="true" />
           </a>
           <nav aria-label="Sections">
             <ul className={styles.nav}>

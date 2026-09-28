@@ -47,6 +47,8 @@ export type Job = {
 
 export const profile = {
   name: "Erick Karl Volkert",
+  /** Typed out by the intro. */
+  fullName: "Erick Karl Volkert Alves",
   firstName: "Erick",
   role: "Senior Software Engineer",
   location: "São Paulo, Brazil",

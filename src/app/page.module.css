@@ -13,11 +13,24 @@
   border-bottom: 1px solid var(--rule);
 }
 
-/* Echoes the handwritten intro. */
+/* Echoes the typed intro. */
 .signature {
-  font: 400 34px/1 var(--f-script);
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font: 500 18px/1 var(--f-mono);
   color: var(--ink);
   text-decoration: none;
+}
+.prompt {
+  color: var(--accent);
+  margin-right: 6px;
+}
+.caret {
+  width: 0.55em;
+  height: 1.05em;
+  margin-left: 3px;
+  background: var(--accent);
 }
 
 .nav {

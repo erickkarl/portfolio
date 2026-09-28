@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Intro.module.css";
+import { buildTimeline } from "./typing";
 
 export const INTRO_SEEN_KEY = "intro-seen";
 
@@ -15,53 +16,67 @@ function dismiss() {
   document.documentElement.setAttribute("data-intro", "off");
 }
 
+type Phase = "idle" | "typing" | "done" | "leaving";
+
 type Props = {
-  name: string;
-  role: string;
+  /** Text typed on screen. */
+  text: string;
+  /** Random source for keystroke timing; inject a seeded one for tests. */
+  rng?: () => number;
 };
 
 /**
- * Full-screen overlay that writes the name by hand, then lifts away.
- * The whole timeline is CSS, so it plays and ends even before hydration;
- * script only remembers the visit and powers the skip button.
+ * Full-screen overlay: a lone cursor blinks three times, the text is typed
+ * at a human pace, then the overlay fades away to reveal the site.
  */
-export function Intro({ name, role }: Props) {
+export function Intro({ text, rng }: Props) {
+  const [typed, setTyped] = useState(0);
+  const [phase, setPhase] = useState<Phase>("idle");
+
   useEffect(() => {
     try {
       sessionStorage.setItem(INTRO_SEEN_KEY, "1");
     } catch {
       // Storage can be blocked; the intro just plays again next time.
     }
-  }, []);
+
+    const root = document.documentElement;
+    if (root.getAttribute("data-intro") === "off") return;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+      dismiss();
+      return;
+    }
+
+    const { keys, typingStart, leaveAt, endAt } = buildTimeline(text, rng);
+    const timers = [
+      window.setTimeout(() => setPhase("typing"), typingStart),
+      ...keys.map((at, i) =>
+        window.setTimeout(() => {
+          setTyped(i + 1);
+          if (i === keys.length - 1) setPhase("done");
+        }, at),
+      ),
+      window.setTimeout(() => setPhase("leaving"), leaveAt),
+      window.setTimeout(dismiss, endAt),
+    ];
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") dismiss();
+    };
+    window.addEventListener("keydown", onKey);
+
+    return () => {
+      timers.forEach(window.clearTimeout);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [text, rng]);
 
   return (
-    <div
-      className={styles.intro}
-      data-testid="intro"
-      onAnimationEnd={(e) => {
-        if (e.target === e.currentTarget) dismiss();
-      }}
-    >
-      <div className={styles.stage}>
-        <svg className={styles.signature} viewBox="0 0 1000 240" aria-hidden="true">
-          <defs>
-            <mask id="intro-reveal" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="240">
-              <rect className={styles.sweep} x="0" y="0" width="1000" height="240" fill="white" />
-            </mask>
-          </defs>
-          <text
-            className={styles.ink}
-            x="500"
-            y="160"
-            textAnchor="middle"
-            mask="url(#intro-reveal)"
-          >
-            {name}
-          </text>
-          <path className={styles.flourish} d="M250 196 C 420 180, 600 212, 760 188" />
-        </svg>
-        <p className={styles.role}>{role}</p>
-      </div>
+    <div className={`${styles.intro} ${styles[phase]}`} data-testid="intro" data-phase={phase}>
+      <p className={styles.line} aria-hidden="true">
+        <span className={styles.text}>{text.slice(0, typed)}</span>
+        <span className={styles.cursor} />
+      </p>
       <button type="button" className={styles.skip} onClick={dismiss}>
         Skip intro
       </button>
