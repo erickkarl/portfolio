@@ -3,7 +3,7 @@ export const BLINK_MS = 700;
 /** How many times the cursor blinks before typing starts. */
 export const IDLE_BLINKS = 3;
 /** Pause after the last key, while the cursor blinks again. */
-export const HOLD_MS = 1000;
+export const HOLD_MS = 1400;
 /** Duration of the overlay's exit transition. */
 export const LEAVE_MS = 600;
 

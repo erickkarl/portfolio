@@ -21,6 +21,8 @@ type Phase = "idle" | "typing" | "done" | "leaving";
 type Props = {
   /** Text typed on screen. */
   text: string;
+  /** Small line that fades in below once typing finishes. */
+  tagline?: string;
   /** Random source for keystroke timing; inject a seeded one for tests. */
   rng?: () => number;
 };
@@ -29,7 +31,7 @@ type Props = {
  * Full-screen overlay: a lone cursor blinks three times, the text is typed
  * at a human pace, then the overlay fades away to reveal the site.
  */
-export function Intro({ text, rng }: Props) {
+export function Intro({ text, tagline, rng }: Props) {
   const [typed, setTyped] = useState(0);
   const [phase, setPhase] = useState<Phase>("idle");
 
@@ -73,10 +75,20 @@ export function Intro({ text, rng }: Props) {
 
   return (
     <div className={`${styles.intro} ${styles[phase]}`} data-testid="intro" data-phase={phase}>
-      <p className={styles.line} aria-hidden="true">
-        <span className={styles.text}>{text.slice(0, typed)}</span>
-        <span className={styles.cursor} />
-      </p>
+      <div className={styles.stage} aria-hidden="true">
+        <p className={styles.line}>
+          <span className={styles.text}>{text.slice(0, typed)}</span>
+          <span className={styles.cursor} />
+        </p>
+        {tagline ? (
+          <p
+            className={styles.tagline}
+            data-visible={phase === "done" || phase === "leaving"}
+          >
+            {tagline}
+          </p>
+        ) : null}
+      </div>
       <button type="button" className={styles.skip} onClick={dismiss}>
         Skip intro
       </button>

@@ -12,7 +12,7 @@ function seeded(seed: number) {
   };
 }
 
-const NAME = "Erick Karl Volkert Alves";
+const NAME = "Erick Karl";
 
 describe("buildTypingSchedule", () => {
   it("has one delay per character", () => {

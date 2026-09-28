@@ -17,7 +17,7 @@ export default function Home() {
 
   return (
     <>
-      <Intro text={profile.fullName} />
+      <Intro text={profile.intro.text} tagline={profile.intro.tagline} />
 
       <div className={styles.page}>
         <header className={styles.header}>
