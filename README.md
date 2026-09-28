@@ -2,7 +2,7 @@
 
 Personal portfolio of a senior software engineer. Opens with a terminal-style intro that types my name, then covers what I do, the technologies I use and where I've shipped.
 
-**Live:** https://erickkarl.github.io/portfolio/ · **Components:** https://erickkarl.github.io/portfolio/storybook/
+**Live:** https://erickkarl.dev · **Components:** https://erickkarl.dev/storybook/
 
 Built with the same stack I use at work:
 
@@ -43,7 +43,7 @@ src/
 
 ## Deployment
 
-`deploy.yml` runs lint, typecheck and tests, builds the site with the Pages base path, builds Storybook into `out/storybook`, and publishes to GitHub Pages.
+`deploy.yml` runs lint, typecheck and tests, builds the site (base path comes from the Pages config, empty on the custom domain), builds Storybook into `out/storybook`, and publishes to GitHub Pages.
 
 ## Credits
 
