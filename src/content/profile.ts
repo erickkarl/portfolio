@@ -45,6 +45,7 @@ export const profile = {
   company: "Witek",
   headline:
     "I build web, mobile and cloud products with React, Next.js, Node, TypeScript and AWS.",
+  email: "erickkarl5@gmail.com",
   linkedin: "https://www.linkedin.com/in/erick-kva",
   github: "https://github.com/erickkarl",
 

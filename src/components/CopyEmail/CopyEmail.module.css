@@ -1,0 +1,41 @@
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+}
+
+.address {
+  font: 400 0.9375rem/1.4 var(--f-mono);
+  color: var(--ink-2);
+  user-select: all;
+  word-break: break-all;
+}
+
+.copy {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 0 0 1px var(--hairline-strong);
+  color: var(--ink-2);
+  font: 500 0.8125rem/1 var(--f-sans);
+  cursor: pointer;
+  transition:
+    transform 0.1s ease-out,
+    background-color 0.2s var(--ease-ui),
+    color 0.2s var(--ease-ui);
+}
+.copy:hover {
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.1);
+}
+/* Feedback on press, not on release. */
+.copy:active {
+  transform: scale(0.96);
+}

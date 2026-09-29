@@ -1,3 +1,4 @@
+import { CopyEmail } from "@/components/CopyEmail/CopyEmail";
 import { Experience } from "@/components/Experience/Experience";
 import { Icon } from "@/components/Icon/Icon";
 import { Intro } from "@/components/Intro/Intro";
@@ -19,8 +20,6 @@ const nav = [
 ];
 
 export default function Home() {
-  const linkedinHandle = profile.linkedin.replace("https://www.", "");
-
   return (
     <>
       <Intro text={profile.intro.text} tagline={profile.intro.tagline} />
@@ -166,19 +165,26 @@ export default function Home() {
               <SplitWords text="Let's build what's next." />
             </h2>
             <p className={styles.contactText} data-reveal>
-              Based in {profile.location} and working remotely. The fastest way to reach me is on LinkedIn.
+              Based in {profile.location} and working remotely. Email me, or find me on LinkedIn.
             </p>
             <div className={styles.actions} data-reveal>
-              <a className={styles.btnPrimary} href={profile.linkedin} target="_blank" rel="noopener noreferrer">
-                Message me on LinkedIn <Icon name="tabler:arrow-up-right" />
+              <a className={styles.btnPrimary} href={`mailto:${profile.email}`}>
+                <Icon name="tabler:mail" /> Email me
+              </a>
+              <a className={styles.btnSecondary} href={profile.linkedin} target="_blank" rel="noopener noreferrer">
+                LinkedIn <Icon name="tabler:arrow-up-right" />
               </a>
               <a className={styles.btnSecondary} href={profile.github} target="_blank" rel="noopener noreferrer">
                 GitHub <Icon name="tabler:arrow-up-right" />
               </a>
             </div>
-            <p className={styles.handle} data-reveal>
-              {linkedinHandle}
-            </p>
+            <div data-reveal>
+              <CopyEmail
+                email={profile.email}
+                copyIcon={<Icon name="tabler:copy" />}
+                doneIcon={<Icon name="tabler:check" />}
+              />
+            </div>
           </div>
           <p className={styles.contactCredit}>{aurora.caption}</p>
         </section>

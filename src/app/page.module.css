@@ -357,11 +357,6 @@
   line-height: 1.5;
   color: var(--ink-2);
 }
-.handle {
-  font: 400 0.875rem/1.4 var(--f-mono);
-  color: var(--ink-3);
-  user-select: all;
-}
 .contactCredit {
   width: min(100% - 2 * var(--gutter), var(--measure));
   margin: 0 auto;
