@@ -9,9 +9,8 @@ export type Tech = {
    * "simple-icons:" (shown in white) where the official mark is dark ink.
    */
   logo: string;
-  /** Brand color, used for the card's glow. */
+  /** Brand color, used for the pill's glow. */
   color: string;
-  where: string;
 };
 
 export type TechGroup = {
@@ -62,6 +61,7 @@ export const profile = {
     "Design systems in Storybook with clean, well-structured architecture",
     "Trunk-based development and continuous delivery on GitHub Actions",
     "AWS infrastructure: Amplify, Lambda, CloudFront, DynamoDB, KMS and more",
+    "SQL and NoSQL data with PostgreSQL, MongoDB and DynamoDB; containers with Docker and Kubernetes",
     "Feature flags and monitoring with AppConfig, Datadog, Sentry and Mixpanel",
     "Frontend technical leadership and mentoring",
   ],
@@ -76,31 +76,43 @@ export const profile = {
     {
       title: "Frontend & mobile",
       items: [
-        { name: "React", logo: "logos:react", color: "#61DAFB", where: "Witek · Ourinvest" },
-        { name: "Next.js", logo: "simple-icons:nextdotjs", color: "#FFFFFF", where: "Witek · Ourinvest" },
-        { name: "React Native", logo: "logos:react", color: "#61DAFB", where: "Witek · Accenture" },
-        { name: "TypeScript", logo: "logos:typescript-icon", color: "#3178C6", where: "Witek · Accenture" },
-        { name: "Vue", logo: "logos:vue", color: "#42B883", where: "Witek" },
-        { name: "Storybook", logo: "logos:storybook-icon", color: "#FF4785", where: "Ourinvest" },
-        { name: "Redux-Saga", logo: "logos:redux-saga", color: "#86D46B", where: "Accenture" },
+        { name: "React", logo: "logos:react", color: "#61DAFB" },
+        { name: "Next.js", logo: "simple-icons:nextdotjs", color: "#FFFFFF" },
+        { name: "React Native", logo: "logos:react", color: "#61DAFB" },
+        { name: "TypeScript", logo: "logos:typescript-icon", color: "#3178C6" },
+        { name: "Vue", logo: "logos:vue", color: "#42B883" },
+        { name: "Tailwind CSS", logo: "logos:tailwindcss-icon", color: "#38BDF8" },
+        { name: "Redux Toolkit", logo: "logos:redux", color: "#764ABC" },
+        { name: "Storybook", logo: "logos:storybook-icon", color: "#FF4785" },
       ],
     },
     {
       title: "Backend",
       items: [
-        { name: "Node.js", logo: "logos:nodejs-icon", color: "#5FA04E", where: "Witek" },
-        { name: "NestJS", logo: "logos:nestjs", color: "#E0234E", where: "Witek" },
-        { name: "Django Ninja", logo: "simple-icons:django", color: "#44B78B", where: "Witek" },
-        { name: "Python", logo: "logos:python", color: "#3776AB", where: "Witek" },
+        { name: "Node.js", logo: "logos:nodejs-icon", color: "#5FA04E" },
+        { name: "Express", logo: "simple-icons:express", color: "#FFFFFF" },
+        { name: "NestJS", logo: "logos:nestjs", color: "#E0234E" },
+        { name: "Django Ninja", logo: "simple-icons:django", color: "#44B78B" },
+        { name: "Python", logo: "logos:python", color: "#3776AB" },
+      ],
+    },
+    {
+      title: "Data · SQL & NoSQL",
+      items: [
+        { name: "PostgreSQL", logo: "logos:postgresql", color: "#4169E1" },
+        { name: "MongoDB", logo: "logos:mongodb-icon", color: "#47A248" },
+        { name: "DynamoDB", logo: "logos:aws-dynamodb", color: "#4053D6" },
       ],
     },
     {
       title: "Cloud & delivery",
       items: [
-        { name: "AWS", logo: "simple-icons:amazonwebservices", color: "#FF9900", where: "Ourinvest · Witek" },
-        { name: "GitHub Actions", logo: "logos:github-actions", color: "#2088FF", where: "Ourinvest" },
-        { name: "Datadog", logo: "logos:datadog-icon", color: "#7C4DDB", where: "Ourinvest" },
-        { name: "Sentry", logo: "simple-icons:sentry", color: "#A78BFA", where: "Ourinvest" },
+        { name: "AWS", logo: "simple-icons:amazonwebservices", color: "#FF9900" },
+        { name: "Docker", logo: "logos:docker-icon", color: "#2496ED" },
+        { name: "Kubernetes", logo: "logos:kubernetes", color: "#326CE5" },
+        { name: "GitHub Actions", logo: "logos:github-actions", color: "#2088FF" },
+        { name: "Datadog", logo: "logos:datadog-icon", color: "#7C4DDB" },
+        { name: "Sentry", logo: "simple-icons:sentry", color: "#A78BFA" },
       ],
     },
   ] satisfies TechGroup[],
@@ -166,7 +178,7 @@ export const profile = {
             "Key contributor to the complete refactor of Unilever's local sales app. Made memory-heavy tasks more efficient and kept the code as clean as possible, leaving the app faster and smoother to use.",
         },
       ],
-      tags: ["React Native", "TypeScript", "Redux-Saga", "Styled Components", "Salesforce SDK"],
+      tags: ["React Native", "TypeScript", "Redux", "Styled Components", "Salesforce SDK"],
     },
   ] satisfies Job[],
 
