@@ -1,6 +1,14 @@
 # Erick Karl Volkert — Portfolio
 
+[![Live site](https://img.shields.io/badge/live-erickkarl.dev-2563eb?style=flat-square)](https://erickkarl.dev)
+[![Storybook](https://img.shields.io/badge/components-storybook-ff4785?style=flat-square&logo=storybook&logoColor=white)](https://erickkarl.dev/storybook/)
+[![Deploy](https://img.shields.io/github/actions/workflow/status/erickkarl/portfolio/deploy.yml?branch=main&label=deploy&style=flat-square)](https://github.com/erickkarl/portfolio/actions/workflows/deploy.yml)
+![Next.js 16](https://img.shields.io/badge/Next.js-16-000000?style=flat-square&logo=nextdotjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?style=flat-square&logo=typescript&logoColor=white)
+
 Personal portfolio of a senior software engineer, art-directed as a view from orbit: a terminal-style intro types my name, then the site opens on the first light of an orbital sunrise photographed from the ISS.
+
+[![Portfolio hero: an orbital sunrise behind the name Erick Karl Volkert](docs/preview.jpg)](https://erickkarl.dev)
 
 Design guided by the `apple-design` (Emil Kowalski) and `build-awwwards-quality-sites` (Meng To) skills: size-specific type tracking, a translucent floating nav, press feedback, word-by-word reveals, a scroll-drawn career trajectory, a live starfield (drifting stars, shooting stars, a passing satellite, and fine stardust that trails the pointer), and full reduced-motion / no-JavaScript fallbacks.
 
