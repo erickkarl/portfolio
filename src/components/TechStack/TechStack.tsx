@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { Icon } from "@/components/Icon/Icon";
 import type { TechGroup } from "@/content/profile";
 import styles from "./TechStack.module.css";
 
@@ -10,19 +10,17 @@ export function TechStack({ groups }: Props) {
   return (
     <div className={styles.groups}>
       {groups.map((group) => (
-        <div key={group.title} className={styles.group}>
+        <div key={group.title} className={styles.group} data-reveal>
           <h3 className={styles.groupTitle}>{group.title}</h3>
-          <ul className={styles.grid}>
+          <ul className={styles.list}>
             {group.items.map((tech) => (
-              <li key={tech.name} className={styles.tile}>
-                <span className={styles.logo}>
+              <li key={tech.name} className={styles.item}>
+                <span className={styles.mark}>
                   {/* Decorative: the name is printed right next to it. */}
-                  <Image src={tech.logo} alt="" width={36} height={36} unoptimized />
+                  <Icon name={tech.logo} size={24} />
                 </span>
-                <span className={styles.text}>
-                  <span className={styles.name}>{tech.name}</span>
-                  <span className={styles.where}>{tech.where}</span>
-                </span>
+                <span className={styles.name}>{tech.name}</span>
+                <span className={styles.where}>{tech.where}</span>
               </li>
             ))}
           </ul>

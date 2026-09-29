@@ -1,20 +1,14 @@
-import { JetBrains_Mono, Public_Sans, Saira_Condensed } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 
-const saira = Saira_Condensed({
-  variable: "--font-saira",
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
-});
-
-const publicSans = Public_Sans({
-  variable: "--font-public-sans",
+const geist = Geist({
+  variable: "--font-geist",
   subsets: ["latin"],
 });
 
-const jetbrains = JetBrains_Mono({
-  variable: "--font-jetbrains",
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
 /** Class names that define the --font-* variables used by globals.css. */
-export const fontVariables = `${saira.variable} ${publicSans.variable} ${jetbrains.variable}`;
+export const fontVariables = `${geist.variable} ${geistMono.variable}`;

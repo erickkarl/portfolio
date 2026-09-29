@@ -7,13 +7,20 @@ import { buildTimeline } from "./typing";
 export const INTRO_SEEN_KEY = "intro-seen";
 
 /**
- * Runs before first paint (see layout.tsx). Hides the intro for visitors who
- * already watched it this session, so there is no flash of the overlay.
+ * Runs before first paint (see layout.tsx). Flags that script is available
+ * (so hero pieces may start hidden for their entrance) and hides the intro for
+ * visitors who already watched it this session, so the overlay never flashes.
  */
-export const introBootScript = `try{if(sessionStorage.getItem("${INTRO_SEEN_KEY}")==="1")document.documentElement.setAttribute("data-intro","off")}catch(e){}`;
+export const introBootScript = `document.documentElement.classList.add("js");try{if(sessionStorage.getItem("${INTRO_SEEN_KEY}")==="1")document.documentElement.setAttribute("data-intro","off")}catch(e){}`;
+
+/** Fired once the overlay is gone, so the hero can start its entrance. */
+export const INTRO_DONE_EVENT = "intro:done";
 
 function dismiss() {
-  document.documentElement.setAttribute("data-intro", "off");
+  const root = document.documentElement;
+  if (root.getAttribute("data-intro") === "off") return;
+  root.setAttribute("data-intro", "off");
+  window.dispatchEvent(new Event(INTRO_DONE_EVENT));
 }
 
 type Phase = "idle" | "typing" | "done" | "leaving";

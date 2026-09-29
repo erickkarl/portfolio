@@ -19,6 +19,6 @@ describe("TechStack", () => {
   it("shows a logo for each technology", () => {
     const { container } = render(<TechStack groups={profile.stack} />);
     const total = profile.stack.reduce((n, g) => n + g.items.length, 0);
-    expect(container.querySelectorAll("img")).toHaveLength(total);
+    expect(container.querySelectorAll("li svg")).toHaveLength(total);
   });
 });

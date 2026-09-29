@@ -1,0 +1,13 @@
+/* The clip lets each word rise from its own baseline. */
+.word {
+  display: inline-block;
+  overflow: clip;
+  overflow-clip-margin: 0.12em;
+  vertical-align: top;
+  padding-bottom: 0.06em;
+}
+
+.inner {
+  display: inline-block;
+  will-change: transform;
+}

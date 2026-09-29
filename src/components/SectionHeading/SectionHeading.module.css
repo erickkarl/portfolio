@@ -1,10 +1,14 @@
 .heading {
   display: grid;
-  gap: 6px;
-  margin-bottom: 28px;
+  gap: 14px;
+  margin-bottom: clamp(40px, 6vw, 72px);
 }
 
+/* Large display type: tight leading, negative tracking. */
 .title {
-  font: 600 clamp(30px, 4.5vw, 42px) / 1.05 var(--f-display);
-  letter-spacing: 0.005em;
+  font-size: clamp(2.25rem, 5.4vw, 4.25rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  font-weight: 600;
+  max-width: 16ch;
 }

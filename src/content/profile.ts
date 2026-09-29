@@ -1,25 +1,10 @@
 // Single source of truth for everything the page shows.
 // Edit this file to update the portfolio; components only render it.
-import type { StaticImageData } from "next/image";
-import awsLogo from "@/assets/tech/aws.svg";
-import datadogLogo from "@/assets/tech/datadog.svg";
-import djangoLogo from "@/assets/tech/django.svg";
-import githubActionsLogo from "@/assets/tech/github-actions.svg";
-import nestjsLogo from "@/assets/tech/nestjs.svg";
-import nextjsLogo from "@/assets/tech/nextjs.svg";
-import nodejsLogo from "@/assets/tech/nodejs.svg";
-import pythonLogo from "@/assets/tech/python.svg";
-import reactNativeLogo from "@/assets/tech/react-native.svg";
-import reactLogo from "@/assets/tech/react.svg";
-import reduxLogo from "@/assets/tech/redux.svg";
-import sentryLogo from "@/assets/tech/sentry.svg";
-import storybookLogo from "@/assets/tech/storybook.svg";
-import typescriptLogo from "@/assets/tech/typescript.svg";
-import vueLogo from "@/assets/tech/vue.svg";
 
 export type Tech = {
   name: string;
-  logo: StaticImageData | string;
+  /** Iconify "logos" icon name — the technology's real mark. */
+  logo: string;
   where: string;
 };
 
@@ -58,6 +43,9 @@ export const profile = {
   linkedin: "https://www.linkedin.com/in/erick-kva",
   github: "https://github.com/erickkarl",
 
+  /** One line that sums up the work; shown large at the top of About. */
+  statement: "I build software that registry offices, banks and field teams rely on every day.",
+
   about: [
     "I'm a senior software engineer at Witek, building software for several clients across six stacks. Most of my time goes to ONR, the national operator that runs Brazil's electronic property registration system for registry offices across the country, and to ON-RPCN, which is digitizing birth, death and marriage records nationwide.",
     "Before that I helped a bank take two apps from an empty repository to production, led its frontend team, and rebuilt a large sales app for Unilever in React Native.",
@@ -82,31 +70,31 @@ export const profile = {
     {
       title: "Frontend & mobile",
       items: [
-        { name: "React", logo: reactLogo, where: "Witek · Ourinvest" },
-        { name: "Next.js", logo: nextjsLogo, where: "Witek · Ourinvest" },
-        { name: "React Native", logo: reactNativeLogo, where: "Witek · Accenture" },
-        { name: "TypeScript", logo: typescriptLogo, where: "Witek · Accenture" },
-        { name: "Vue", logo: vueLogo, where: "Witek" },
-        { name: "Storybook", logo: storybookLogo, where: "Ourinvest" },
-        { name: "Redux-Saga", logo: reduxLogo, where: "Accenture" },
+        { name: "React", logo: "logos:react", where: "Witek · Ourinvest" },
+        { name: "Next.js", logo: "logos:nextjs-icon", where: "Witek · Ourinvest" },
+        { name: "React Native", logo: "logos:react", where: "Witek · Accenture" },
+        { name: "TypeScript", logo: "logos:typescript-icon", where: "Witek · Accenture" },
+        { name: "Vue", logo: "logos:vue", where: "Witek" },
+        { name: "Storybook", logo: "logos:storybook-icon", where: "Ourinvest" },
+        { name: "Redux-Saga", logo: "logos:redux", where: "Accenture" },
       ],
     },
     {
       title: "Backend",
       items: [
-        { name: "Node.js", logo: nodejsLogo, where: "Witek" },
-        { name: "NestJS", logo: nestjsLogo, where: "Witek" },
-        { name: "Django Ninja", logo: djangoLogo, where: "Witek" },
-        { name: "Python", logo: pythonLogo, where: "Witek" },
+        { name: "Node.js", logo: "logos:nodejs-icon", where: "Witek" },
+        { name: "NestJS", logo: "logos:nestjs", where: "Witek" },
+        { name: "Django Ninja", logo: "logos:django-icon", where: "Witek" },
+        { name: "Python", logo: "logos:python", where: "Witek" },
       ],
     },
     {
       title: "Cloud & delivery",
       items: [
-        { name: "AWS", logo: awsLogo, where: "Ourinvest · Witek" },
-        { name: "GitHub Actions", logo: githubActionsLogo, where: "Ourinvest" },
-        { name: "Datadog", logo: datadogLogo, where: "Ourinvest" },
-        { name: "Sentry", logo: sentryLogo, where: "Ourinvest" },
+        { name: "AWS", logo: "logos:aws", where: "Ourinvest · Witek" },
+        { name: "GitHub Actions", logo: "logos:github-actions", where: "Ourinvest" },
+        { name: "Datadog", logo: "logos:datadog-icon", where: "Ourinvest" },
+        { name: "Sentry", logo: "logos:sentry-icon", where: "Ourinvest" },
       ],
     },
   ] satisfies TechGroup[],

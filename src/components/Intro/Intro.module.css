@@ -5,7 +5,7 @@
   display: grid;
   place-items: center;
   padding-inline: 16px;
-  background: var(--paper);
+  background: var(--space);
   transition:
     opacity 600ms ease,
     transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
@@ -49,7 +49,7 @@
   font: 500 clamp(12px, 1.6vw, 15px) / 1.4 var(--f-mono);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--ink-2);
   opacity: 0;
   transform: translateY(4px);
   transition:
@@ -67,7 +67,7 @@
   width: 0.58em;
   height: 1.1em;
   margin-left: 0.06em;
-  background: var(--accent);
+  background: var(--atmosphere);
   animation: blink 700ms steps(1, end) infinite;
 }
 .typing .cursor {
@@ -80,11 +80,11 @@
   bottom: calc(16px + env(safe-area-inset-bottom, 0px));
   appearance: none;
   background: none;
-  border: 1px solid var(--rule);
+  border: 1px solid var(--hairline-strong);
   border-radius: 999px;
   padding: 8px 14px;
-  font: 500 13px/1 var(--f-body);
-  color: var(--muted);
+  font: 500 13px/1 var(--f-sans);
+  color: var(--ink-2);
   cursor: pointer;
 }
 .skip:hover {
