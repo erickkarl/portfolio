@@ -95,11 +95,6 @@ export const profile = {
         { name: "NestJS", logo: "logos:nestjs", color: "#E0234E" },
         { name: "Django Ninja", logo: "simple-icons:django", color: "#44B78B" },
         { name: "Python", logo: "logos:python", color: "#3776AB" },
-      ],
-    },
-    {
-      title: "Data · SQL & NoSQL",
-      items: [
         { name: "PostgreSQL", logo: "logos:postgresql", color: "#4169E1" },
         { name: "MongoDB", logo: "logos:mongodb-icon", color: "#47A248" },
         { name: "DynamoDB", logo: "logos:aws-dynamodb", color: "#4053D6" },
