@@ -3,8 +3,14 @@
 
 export type Tech = {
   name: string;
-  /** Iconify "logos" icon name — the technology's real mark. */
+  /**
+   * Iconify name of the technology's official mark. Full-color "logos:" marks
+   * where they read on a dark card; the brand's single-color mark from
+   * "simple-icons:" (shown in white) where the official mark is dark ink.
+   */
   logo: string;
+  /** Brand color, used for the card's glow. */
+  color: string;
   where: string;
 };
 
@@ -70,31 +76,31 @@ export const profile = {
     {
       title: "Frontend & mobile",
       items: [
-        { name: "React", logo: "logos:react", where: "Witek · Ourinvest" },
-        { name: "Next.js", logo: "logos:nextjs-icon", where: "Witek · Ourinvest" },
-        { name: "React Native", logo: "logos:react", where: "Witek · Accenture" },
-        { name: "TypeScript", logo: "logos:typescript-icon", where: "Witek · Accenture" },
-        { name: "Vue", logo: "logos:vue", where: "Witek" },
-        { name: "Storybook", logo: "logos:storybook-icon", where: "Ourinvest" },
-        { name: "Redux-Saga", logo: "logos:redux", where: "Accenture" },
+        { name: "React", logo: "logos:react", color: "#61DAFB", where: "Witek · Ourinvest" },
+        { name: "Next.js", logo: "simple-icons:nextdotjs", color: "#FFFFFF", where: "Witek · Ourinvest" },
+        { name: "React Native", logo: "logos:react", color: "#61DAFB", where: "Witek · Accenture" },
+        { name: "TypeScript", logo: "logos:typescript-icon", color: "#3178C6", where: "Witek · Accenture" },
+        { name: "Vue", logo: "logos:vue", color: "#42B883", where: "Witek" },
+        { name: "Storybook", logo: "logos:storybook-icon", color: "#FF4785", where: "Ourinvest" },
+        { name: "Redux-Saga", logo: "logos:redux-saga", color: "#86D46B", where: "Accenture" },
       ],
     },
     {
       title: "Backend",
       items: [
-        { name: "Node.js", logo: "logos:nodejs-icon", where: "Witek" },
-        { name: "NestJS", logo: "logos:nestjs", where: "Witek" },
-        { name: "Django Ninja", logo: "logos:django-icon", where: "Witek" },
-        { name: "Python", logo: "logos:python", where: "Witek" },
+        { name: "Node.js", logo: "logos:nodejs-icon", color: "#5FA04E", where: "Witek" },
+        { name: "NestJS", logo: "logos:nestjs", color: "#E0234E", where: "Witek" },
+        { name: "Django Ninja", logo: "simple-icons:django", color: "#44B78B", where: "Witek" },
+        { name: "Python", logo: "logos:python", color: "#3776AB", where: "Witek" },
       ],
     },
     {
       title: "Cloud & delivery",
       items: [
-        { name: "AWS", logo: "logos:aws", where: "Ourinvest · Witek" },
-        { name: "GitHub Actions", logo: "logos:github-actions", where: "Ourinvest" },
-        { name: "Datadog", logo: "logos:datadog-icon", where: "Ourinvest" },
-        { name: "Sentry", logo: "logos:sentry-icon", where: "Ourinvest" },
+        { name: "AWS", logo: "simple-icons:amazonwebservices", color: "#FF9900", where: "Ourinvest · Witek" },
+        { name: "GitHub Actions", logo: "logos:github-actions", color: "#2088FF", where: "Ourinvest" },
+        { name: "Datadog", logo: "logos:datadog-icon", color: "#7C4DDB", where: "Ourinvest" },
+        { name: "Sentry", logo: "simple-icons:sentry", color: "#A78BFA", where: "Ourinvest" },
       ],
     },
   ] satisfies TechGroup[],

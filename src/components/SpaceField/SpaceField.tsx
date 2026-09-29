@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { Photo } from "@/components/Photo/Photo";
+import { milkyWay } from "@/content/media";
 import styles from "./SpaceField.module.css";
 import {
   createDust,
@@ -9,6 +11,7 @@ import {
   createStreak,
   dustAlpha,
   dustToEmit,
+  STAR_TINTS,
   stepDust,
   wrap,
   type Dust,
@@ -37,17 +40,24 @@ function makeGlow(): HTMLCanvasElement {
   return c;
 }
 
+/** Resting pose of the Milky Way photo: tilted so the band crosses the page. */
+const BACKDROP_BASE = "translate(-50%, -50%) rotate(-16deg)";
+
 /**
- * Live sky behind the whole site: drifting, twinkling stars in depth, the odd
- * shooting star and satellite, and stardust that trails and follows the
- * pointer. Purely decorative, so it is hidden from assistive technology.
- * Under reduced motion it draws one still starfield and stops.
+ * Live sky behind the whole site. A real photograph of the Milky Way
+ * (ESO/S. Brunier) supplies depth and texture; on top of it, a sparse layer of
+ * color-true stars twinkles and drifts, the odd shooting star and satellite
+ * pass, and stardust trails and follows the pointer. Both layers parallax
+ * gently with scroll and pointer. Purely decorative, so hidden from assistive
+ * technology. Under reduced motion it draws one still sky and stops.
  */
 export function SpaceField() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const backdropRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current!;
+    const backdrop = backdropRef.current!;
     const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
@@ -98,19 +108,33 @@ export function SpaceField() {
         s.x = wrap(s.x + (1.2 + s.z * 4) * dt, width);
         const x = wrap(s.x + parallaxX * s.z * 18, width);
         const y = wrap(s.y - scroll * (0.03 + s.z * 0.12) + parallaxY * s.z * 18, height);
-        const twinkle = reduceMotion ? 1 : 0.65 + 0.35 * Math.sin(time * s.twinkleSpeed + s.phase);
-        const a = (0.25 + s.z * 0.75) * twinkle;
+        const twinkle = reduceMotion ? 1 : 0.75 + 0.25 * Math.sin(time * s.twinkleSpeed + s.phase);
+        const a = (0.3 + s.z * 0.7) * twinkle;
         if (s.z > 0.55) {
           const g = s.r * 7;
           ctx.globalAlpha = a * 0.35;
           ctx.drawImage(glow, x - g / 2, y - g / 2, g, g);
         }
         ctx.globalAlpha = a;
-        ctx.fillStyle = "#fff";
-        ctx.beginPath();
-        ctx.arc(x, y, s.r, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.fillStyle = `rgb(${STAR_TINTS[s.tint]})`;
+        if (s.r < 0.8) {
+          // Sub-pixel stars read crisper as a tiny square than a blurred arc.
+          ctx.fillRect(x - s.r, y - s.r, s.r * 2, s.r * 2);
+        } else {
+          ctx.beginPath();
+          ctx.arc(x, y, s.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
       }
+      ctx.globalAlpha = 1;
+    };
+
+    // The photographed sky sits much farther away than the live stars, so it
+    // moves the least.
+    const placeBackdrop = () => {
+      const y = -window.scrollY * 0.02 - parallaxY * 10;
+      const x = -parallaxX * 10;
+      backdrop.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0) ${BACKDROP_BASE}`;
     };
 
     const drawMovers = (dt: number) => {
@@ -202,6 +226,7 @@ export function SpaceField() {
       time += dt;
       parallaxX += (targetPX - parallaxX) * Math.min(1, dt * 3);
       parallaxY += (targetPY - parallaxY) * Math.min(1, dt * 3);
+      placeBackdrop();
       draw(dt);
       raf = requestAnimationFrame(frame);
     };
@@ -270,5 +295,12 @@ export function SpaceField() {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className={styles.canvas} aria-hidden="true" />;
+  return (
+    <div className={styles.sky} aria-hidden="true">
+      <div ref={backdropRef} className={styles.backdrop}>
+        <Photo photo={milkyWay} className={styles.backdropImg} priority sizes="140vw" />
+      </div>
+      <canvas ref={canvasRef} className={styles.canvas} />
+    </div>
+  );
 }

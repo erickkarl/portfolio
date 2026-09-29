@@ -7,7 +7,7 @@ import { SectionHeading } from "@/components/SectionHeading/SectionHeading";
 import { SpaceField } from "@/components/SpaceField/SpaceField";
 import { SplitWords } from "@/components/SplitWords/SplitWords";
 import { TechStack } from "@/components/TechStack/TechStack";
-import { aurora, orbitalSunrise } from "@/content/media";
+import { aurora, milkyWay, orbitalSunrise } from "@/content/media";
 import { profile } from "@/content/profile";
 import styles from "./page.module.css";
 
@@ -194,9 +194,12 @@ export default function Home() {
             © {new Date().getFullYear()} {profile.name}
           </span>
           <span>
-            Photographs: NASA, public domain. Icons:{" "}
-            <a href="https://www.figma.com/community/file/1166831539721848736">Solar</a> by 480 Design (CC BY 4.0) and{" "}
-            <a href="https://github.com/gilbarbara/logos">SVG Logos</a> (CC0). Built with Next.js, GSAP and Lenis.
+            Earth photographs: NASA, public domain. Milky Way:{" "}
+            <a href={milkyWay.source}>{milkyWay.credit}</a> (
+            <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>). Icons:{" "}
+            <a href="https://www.figma.com/community/file/1166831539721848736">Solar</a> by 480 Design (CC BY 4.0);
+            brand marks from <a href="https://github.com/gilbarbara/logos">SVG Logos</a> and{" "}
+            <a href="https://simpleicons.org">Simple Icons</a> (CC0). Built with Next.js, GSAP and Lenis.
           </span>
         </div>
       </footer>

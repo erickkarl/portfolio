@@ -24,7 +24,7 @@ function seeded(seed: number) {
 describe("stars", () => {
   it("scales with screen area but stays capped", () => {
     expect(starCount(390, 844)).toBeLessThan(starCount(1440, 900));
-    expect(starCount(7680, 4320)).toBe(900);
+    expect(starCount(7680, 4320)).toBe(320);
   });
 
   it("places every star on screen with depth in [0, 1]", () => {
@@ -38,10 +38,16 @@ describe("stars", () => {
     }
   });
 
+  it("gives stars a range of real star colors", () => {
+    const tints = new Set(createStars(1440, 900, seeded(5)).map((s) => s.tint));
+    expect(tints.size).toBeGreaterThanOrEqual(3);
+  });
+
   it("keeps most stars distant", () => {
     const stars = createStars(1440, 900, seeded(2));
     const near = stars.filter((s) => s.z > 0.6).length;
-    expect(near / stars.length).toBeLessThan(0.25);
+    // Expected share is about 0.21 (z = u^2.2), well below a uniform 0.4.
+    expect(near / stars.length).toBeLessThan(0.3);
   });
 
   it("wraps drifting coordinates back onto the screen", () => {

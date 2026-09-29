@@ -10,7 +10,25 @@ export type Star = {
   r: number;
   twinkleSpeed: number;
   phase: number;
+  /** Index into STAR_TINTS: real stars range from blue-white to orange. */
+  tint: number;
 };
+
+/**
+ * Star colors by spectral class, weighted roughly as the eye sees them:
+ * mostly white and blue-white, some pale yellow, a few orange.
+ */
+export const STAR_TINTS = ["255,255,255", "205,222,255", "255,244,224", "255,214,170"] as const;
+const TINT_WEIGHTS = [0.42, 0.3, 0.18, 0.1];
+
+function pickTint(r: number): number {
+  let acc = 0;
+  for (let i = 0; i < TINT_WEIGHTS.length; i++) {
+    acc += TINT_WEIGHTS[i];
+    if (r < acc) return i;
+  }
+  return 0;
+}
 
 export type Dust = {
   x: number;
@@ -41,9 +59,12 @@ export type Satellite = {
   vy: number;
 };
 
-/** Roughly one star per 2,600 px², capped so huge screens stay cheap. */
+/**
+ * The photographed Milky Way already supplies the dense background, so the
+ * live layer only needs a sparse set of nearer stars: about one per 7,000 px².
+ */
 export function starCount(width: number, height: number): number {
-  return Math.min(900, Math.round((width * height) / 2600));
+  return Math.min(320, Math.round((width * height) / 7000));
 }
 
 export function createStars(width: number, height: number, rng: Rng = Math.random): Star[] {
@@ -54,9 +75,11 @@ export function createStars(width: number, height: number, rng: Rng = Math.rando
       x: rng() * width,
       y: rng() * height,
       z,
-      r: 0.35 + z * 1.25,
-      twinkleSpeed: 0.4 + rng() * 1.6,
+      r: 0.3 + z * 1.1,
+      // Scintillation is subtle and slow for most stars.
+      twinkleSpeed: 0.3 + rng() * 1.1,
       phase: rng() * Math.PI * 2,
+      tint: pickTint(rng()),
     };
   });
 }

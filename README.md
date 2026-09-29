@@ -2,7 +2,7 @@
 
 Personal portfolio of a senior software engineer, art-directed as a view from orbit: a terminal-style intro types my name, then the site opens on the first light of an orbital sunrise photographed from the ISS.
 
-Design guided by the `apple-design` (Emil Kowalski) and `build-awwwards-quality-sites` (Meng To) skills: size-specific type tracking, a translucent floating nav, press feedback, word-by-word reveals, a scroll-drawn career trajectory, a live starfield (drifting stars, shooting stars, a passing satellite, and stardust that follows the pointer), and full reduced-motion / no-JavaScript fallbacks.
+Design guided by the `apple-design` (Emil Kowalski) and `build-awwwards-quality-sites` (Meng To) skills: size-specific type tracking, a translucent floating nav, press feedback, word-by-word reveals, a scroll-drawn career trajectory, a live sky (a photographed Milky Way with color-true drifting stars, shooting stars, a passing satellite, and stardust that follows the pointer), and full reduced-motion / no-JavaScript fallbacks.
 
 **Live:** https://erickkarl.dev · **Components:** https://erickkarl.dev/storybook/
 
@@ -52,5 +52,6 @@ src/
 ## Credits
 
 - Photographs: NASA, [ISS071-E-000922](https://images.nasa.gov/details/iss071e000922) (cropped) and [ISS066-E-023323](https://images.nasa.gov/details/iss066e023323). NASA imagery is generally not subject to copyright in the US.
+- Milky Way panorama: [ESO/S. Brunier](https://www.eso.org/public/images/eso0932a/), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) (cropped).
 - Interface icons: [Solar](https://www.figma.com/community/file/1166831539721848736) by 480 Design, CC BY 4.0.
-- Technology marks: [SVG Logos](https://github.com/gilbarbara/logos), CC0. Logos are trademarks of their respective owners.
+- Technology marks: [SVG Logos](https://github.com/gilbarbara/logos) and [Simple Icons](https://simpleicons.org), CC0. Logos are trademarks of their respective owners.

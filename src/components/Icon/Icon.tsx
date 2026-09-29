@@ -1,12 +1,15 @@
 import type { IconifyJSON } from "@iconify/types";
 import { getIconData, iconToSVG, replaceIDs } from "@iconify/utils";
 import logos from "@iconify-json/logos/icons.json";
+import simpleIcons from "@iconify-json/simple-icons/icons.json";
 import solar from "@iconify-json/solar/icons.json";
 
-// Solar (interface icons, CC BY 4.0, 480 Design) and SVG Logos (CC0).
+// Solar (interface icons, CC BY 4.0, 480 Design), SVG Logos (CC0) and
+// Simple Icons (CC0; single-color brand marks drawn with currentColor).
 // Rendered to inline SVG on the server, so no icon code ships to the browser.
 const sets: Record<string, IconifyJSON> = {
   logos: logos as IconifyJSON,
+  "simple-icons": simpleIcons as IconifyJSON,
   solar: solar as IconifyJSON,
 };
 
