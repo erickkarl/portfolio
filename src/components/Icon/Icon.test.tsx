@@ -7,7 +7,7 @@ afterEach(cleanup);
 
 describe("Icon", () => {
   it("renders a decorative icon hidden from assistive technology", () => {
-    const { container } = render(<Icon name="solar:arrow-right-up-linear" />);
+    const { container } = render(<Icon name="tabler:arrow-up-right" />);
     const svg = container.querySelector("svg")!;
     expect(svg.getAttribute("aria-hidden")).toBe("true");
     expect(svg.innerHTML).not.toBe("");

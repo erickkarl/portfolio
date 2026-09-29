@@ -24,7 +24,7 @@ function seeded(seed: number) {
 describe("stars", () => {
   it("scales with screen area but stays capped", () => {
     expect(starCount(390, 844)).toBeLessThan(starCount(1440, 900));
-    expect(starCount(7680, 4320)).toBe(320);
+    expect(starCount(7680, 4320)).toBe(900);
   });
 
   it("places every star on screen with depth in [0, 1]", () => {
@@ -38,16 +38,10 @@ describe("stars", () => {
     }
   });
 
-  it("gives stars a range of real star colors", () => {
-    const tints = new Set(createStars(1440, 900, seeded(5)).map((s) => s.tint));
-    expect(tints.size).toBeGreaterThanOrEqual(3);
-  });
-
   it("keeps most stars distant", () => {
     const stars = createStars(1440, 900, seeded(2));
     const near = stars.filter((s) => s.z > 0.6).length;
-    // Expected share is about 0.21 (z = u^2.2), well below a uniform 0.4.
-    expect(near / stars.length).toBeLessThan(0.3);
+    expect(near / stars.length).toBeLessThan(0.25);
   });
 
   it("wraps drifting coordinates back onto the screen", () => {
@@ -57,27 +51,33 @@ describe("stars", () => {
 });
 
 describe("stardust", () => {
-  it("emits more for longer moves, and less on touch", () => {
+  it("emits fine dust: more for longer moves, less on touch, capped", () => {
     expect(dustToEmit(0, false)).toBe(0);
     expect(dustToEmit(60, false)).toBeGreaterThan(dustToEmit(12, false));
     expect(dustToEmit(60, true)).toBeLessThan(dustToEmit(60, false));
-    expect(dustToEmit(10_000, false)).toBe(10);
+    expect(dustToEmit(10_000, false)).toBe(16);
   });
 
-  it("is pulled toward the pointer", () => {
-    const d = createDust(0, 0, 0, 0, () => 0.5);
-    d.vx = 0;
-    d.vy = 0;
-    stepDust(d, 0.1, 200, 0);
-    expect(d.x).toBeGreaterThan(0);
+  it("is mostly sub-pixel and lingers for over a second", () => {
+    const rng = seeded(7);
+    const motes = Array.from({ length: 400 }, () => createDust(0, 0, 0, 0, rng));
+    const small = motes.filter((d) => d.size < 1).length;
+    expect(small / motes.length).toBeGreaterThan(0.7);
+    for (const d of motes) expect(d.life).toBeGreaterThanOrEqual(1.2);
+  });
+
+  it("drifts slowly instead of flying off", () => {
+    const d = createDust(0, 0, 3000, 0, seeded(8));
+    for (let i = 0; i < 60; i++) stepDust(d, 1 / 60, seeded(9 + i));
+    expect(Math.hypot(d.vx, d.vy)).toBeLessThan(80);
   });
 
   it("fades in, then out, and dies at the end of its life", () => {
     const d = createDust(0, 0, 0, 0, seeded(3));
     expect(dustAlpha(d)).toBe(0);
-    d.age = d.life * 0.12;
-    expect(dustAlpha(d)).toBeCloseTo(1);
-    expect(stepDust(d, d.life, null, null)).toBe(false);
+    d.age = d.life * 0.99;
+    expect(dustAlpha(d)).toBeLessThan(0.02);
+    expect(stepDust(d, d.life)).toBe(false);
   });
 });
 

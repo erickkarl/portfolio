@@ -1,12 +1,9 @@
-// Every photograph on the site, with provenance.
+// Every photograph on the site, with provenance kept here in the source.
+// All are NASA public-domain images, so no on-page credit is required.
 // NASA imagery is generally not subject to copyright in the United States:
 // https://www.nasa.gov/nasa-brand-center/images-and-media/
-// ESO imagery is CC BY 4.0; its credit line must be shown unaltered:
-// https://www.eso.org/public/copyright/
 import auroraLarge from "@/assets/media/aurora-2000.jpg";
 import auroraSmall from "@/assets/media/aurora-1200.jpg";
-import milkyWayLarge from "@/assets/media/milky-way-2200.jpg";
-import milkyWaySmall from "@/assets/media/milky-way-1200.jpg";
 import sunriseLarge from "@/assets/media/orbital-sunrise-2560.jpg";
 import sunriseSmall from "@/assets/media/orbital-sunrise-1280.jpg";
 
@@ -37,11 +34,3 @@ export const aurora: Photo = {
   source: "https://images.nasa.gov/details/iss066e023323",
 };
 
-export const milkyWay: Photo = {
-  small: milkyWaySmall,
-  large: milkyWayLarge,
-  alt: "",
-  caption: "The Milky Way, photographed as a full-sky panorama.",
-  credit: "ESO/S. Brunier",
-  source: "https://www.eso.org/public/images/eso0932a/",
-};

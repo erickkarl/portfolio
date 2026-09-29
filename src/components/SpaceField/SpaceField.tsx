@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Photo } from "@/components/Photo/Photo";
-import { milkyWay } from "@/content/media";
 import styles from "./SpaceField.module.css";
 import {
   createDust,
@@ -11,7 +9,6 @@ import {
   createStreak,
   dustAlpha,
   dustToEmit,
-  STAR_TINTS,
   stepDust,
   wrap,
   type Dust,
@@ -21,9 +18,11 @@ import {
 } from "./space";
 
 const MAX_DPR = 1.75;
-const MAX_DUST = 260;
-/** Dust colors: atmosphere blue, starlight white, sunrise gold. */
-const DUST_RGB = ["111,182,255", "235,240,255", "255,207,138"] as const;
+const MAX_DUST = 700;
+/** Dust colors: pale atmosphere blue, starlight white, a little sunrise gold. */
+const DUST_RGB = ["170,210,255", "245,248,255", "255,220,170"] as const;
+/** While the pointer rests, a faint shimmer keeps gathering around it. */
+const IDLE_EMIT_MS = 90;
 
 /** Soft round glow, drawn once and stamped for every mote and bright star. */
 function makeGlow(): HTMLCanvasElement {
@@ -40,24 +39,17 @@ function makeGlow(): HTMLCanvasElement {
   return c;
 }
 
-/** Resting pose of the Milky Way photo: tilted so the band crosses the page. */
-const BACKDROP_BASE = "translate(-50%, -50%) rotate(-16deg)";
-
 /**
- * Live sky behind the whole site. A real photograph of the Milky Way
- * (ESO/S. Brunier) supplies depth and texture; on top of it, a sparse layer of
- * color-true stars twinkles and drifts, the odd shooting star and satellite
- * pass, and stardust trails and follows the pointer. Both layers parallax
- * gently with scroll and pointer. Purely decorative, so hidden from assistive
- * technology. Under reduced motion it draws one still sky and stops.
+ * Live sky behind the whole site: drifting, twinkling stars in depth, the odd
+ * shooting star and satellite, and stardust that trails and follows the
+ * pointer. Purely decorative, so it is hidden from assistive technology.
+ * Under reduced motion it draws one still starfield and stops.
  */
 export function SpaceField() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const backdropRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current!;
-    const backdrop = backdropRef.current!;
     const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
@@ -108,33 +100,19 @@ export function SpaceField() {
         s.x = wrap(s.x + (1.2 + s.z * 4) * dt, width);
         const x = wrap(s.x + parallaxX * s.z * 18, width);
         const y = wrap(s.y - scroll * (0.03 + s.z * 0.12) + parallaxY * s.z * 18, height);
-        const twinkle = reduceMotion ? 1 : 0.75 + 0.25 * Math.sin(time * s.twinkleSpeed + s.phase);
-        const a = (0.3 + s.z * 0.7) * twinkle;
+        const twinkle = reduceMotion ? 1 : 0.65 + 0.35 * Math.sin(time * s.twinkleSpeed + s.phase);
+        const a = (0.25 + s.z * 0.75) * twinkle;
         if (s.z > 0.55) {
           const g = s.r * 7;
           ctx.globalAlpha = a * 0.35;
           ctx.drawImage(glow, x - g / 2, y - g / 2, g, g);
         }
         ctx.globalAlpha = a;
-        ctx.fillStyle = `rgb(${STAR_TINTS[s.tint]})`;
-        if (s.r < 0.8) {
-          // Sub-pixel stars read crisper as a tiny square than a blurred arc.
-          ctx.fillRect(x - s.r, y - s.r, s.r * 2, s.r * 2);
-        } else {
-          ctx.beginPath();
-          ctx.arc(x, y, s.r, 0, Math.PI * 2);
-          ctx.fill();
-        }
+        ctx.fillStyle = "#fff";
+        ctx.beginPath();
+        ctx.arc(x, y, s.r, 0, Math.PI * 2);
+        ctx.fill();
       }
-      ctx.globalAlpha = 1;
-    };
-
-    // The photographed sky sits much farther away than the live stars, so it
-    // moves the least.
-    const placeBackdrop = () => {
-      const y = -window.scrollY * 0.02 - parallaxY * 10;
-      const x = -parallaxX * 10;
-      backdrop.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0) ${BACKDROP_BASE}`;
     };
 
     const drawMovers = (dt: number) => {
@@ -195,15 +173,18 @@ export function SpaceField() {
       ctx.globalCompositeOperation = "lighter";
       for (let i = dust.length - 1; i >= 0; i--) {
         const d = dust[i];
-        if (!stepDust(d, dt, pointerX, pointerY)) {
+        if (!stepDust(d, dt)) {
           dust.splice(i, 1);
           continue;
         }
         const a = dustAlpha(d);
-        const g = d.size * 9;
-        ctx.globalAlpha = a * 0.5;
-        ctx.drawImage(glow, d.x - g / 2, d.y - g / 2, g, g);
-        ctx.globalAlpha = a;
+        // Only the larger motes get a halo; the rest stay pin-sharp.
+        if (d.size > 0.9) {
+          const g = d.size * 6;
+          ctx.globalAlpha = a * 0.22;
+          ctx.drawImage(glow, d.x - g / 2, d.y - g / 2, g, g);
+        }
+        ctx.globalAlpha = a * 0.95;
         ctx.fillStyle = `rgb(${DUST_RGB[d.hue]})`;
         ctx.fillRect(d.x - d.size / 2, d.y - d.size / 2, d.size, d.size);
       }
@@ -220,13 +201,24 @@ export function SpaceField() {
       ctx!.globalAlpha = 1;
     }
 
+    let idleClock = 0;
+
     const frame = (now: number) => {
       const dt = Math.min(0.05, (now - prev) / 1000 || 0);
       prev = now;
       time += dt;
+      // A resting cursor keeps a faint halo of dust around it.
+      if (pointerX !== null && pointerY !== null && !coarse && now - lastT > 120) {
+        idleClock += dt * 1000;
+        while (idleClock >= IDLE_EMIT_MS && dust.length < MAX_DUST) {
+          idleClock -= IDLE_EMIT_MS;
+          dust.push(createDust(pointerX, pointerY, 0, 0));
+        }
+      } else {
+        idleClock = 0;
+      }
       parallaxX += (targetPX - parallaxX) * Math.min(1, dt * 3);
       parallaxY += (targetPY - parallaxY) * Math.min(1, dt * 3);
-      placeBackdrop();
       draw(dt);
       raf = requestAnimationFrame(frame);
     };
@@ -295,12 +287,5 @@ export function SpaceField() {
     };
   }, []);
 
-  return (
-    <div className={styles.sky} aria-hidden="true">
-      <div ref={backdropRef} className={styles.backdrop}>
-        <Photo photo={milkyWay} className={styles.backdropImg} priority sizes="140vw" />
-      </div>
-      <canvas ref={canvasRef} className={styles.canvas} />
-    </div>
-  );
+  return <canvas ref={canvasRef} className={styles.canvas} aria-hidden="true" />;
 }

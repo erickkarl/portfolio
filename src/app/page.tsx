@@ -7,7 +7,7 @@ import { SectionHeading } from "@/components/SectionHeading/SectionHeading";
 import { SpaceField } from "@/components/SpaceField/SpaceField";
 import { SplitWords } from "@/components/SplitWords/SplitWords";
 import { TechStack } from "@/components/TechStack/TechStack";
-import { aurora, milkyWay, orbitalSunrise } from "@/content/media";
+import { aurora, orbitalSunrise } from "@/content/media";
 import { profile } from "@/content/profile";
 import styles from "./page.module.css";
 
@@ -77,10 +77,10 @@ export default function Home() {
                 Get in touch
               </a>
               <a className={styles.btnSecondary} href={profile.linkedin} target="_blank" rel="noopener noreferrer">
-                LinkedIn <Icon name="solar:arrow-right-up-linear" />
+                LinkedIn <Icon name="tabler:arrow-up-right" />
               </a>
               <a className={styles.btnSecondary} href={profile.github} target="_blank" rel="noopener noreferrer">
-                GitHub <Icon name="solar:arrow-right-up-linear" />
+                GitHub <Icon name="tabler:arrow-up-right" />
               </a>
             </div>
           </div>
@@ -90,9 +90,7 @@ export default function Home() {
               <span className={styles.statusDot} aria-hidden="true" />
               Now at {profile.company}
             </span>
-            <span className={styles.credit}>
-              {orbitalSunrise.caption} <a href={orbitalSunrise.source}>{orbitalSunrise.credit}</a>
-            </span>
+            <span className={styles.credit}>{orbitalSunrise.caption}</span>
           </p>
         </section>
 
@@ -172,19 +170,17 @@ export default function Home() {
             </p>
             <div className={styles.actions} data-reveal>
               <a className={styles.btnPrimary} href={profile.linkedin} target="_blank" rel="noopener noreferrer">
-                Message me on LinkedIn <Icon name="solar:arrow-right-up-linear" />
+                Message me on LinkedIn <Icon name="tabler:arrow-up-right" />
               </a>
               <a className={styles.btnSecondary} href={profile.github} target="_blank" rel="noopener noreferrer">
-                GitHub <Icon name="solar:arrow-right-up-linear" />
+                GitHub <Icon name="tabler:arrow-up-right" />
               </a>
             </div>
             <p className={styles.handle} data-reveal>
               {linkedinHandle}
             </p>
           </div>
-          <p className={styles.contactCredit}>
-            {aurora.caption} <a href={aurora.source}>{aurora.credit}</a>
-          </p>
+          <p className={styles.contactCredit}>{aurora.caption}</p>
         </section>
       </main>
 
@@ -193,14 +189,7 @@ export default function Home() {
           <span>
             © {new Date().getFullYear()} {profile.name}
           </span>
-          <span>
-            Earth photographs: NASA, public domain. Milky Way:{" "}
-            <a href={milkyWay.source}>{milkyWay.credit}</a> (
-            <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>). Icons:{" "}
-            <a href="https://www.figma.com/community/file/1166831539721848736">Solar</a> by 480 Design (CC BY 4.0);
-            brand marks from <a href="https://github.com/gilbarbara/logos">SVG Logos</a> and{" "}
-            <a href="https://simpleicons.org">Simple Icons</a> (CC0). Built with Next.js, GSAP and Lenis.
-          </span>
+          <span>Built with Next.js, GSAP and Lenis.</span>
         </div>
       </footer>
     </>

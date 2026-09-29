@@ -2,19 +2,19 @@ import type { IconifyJSON } from "@iconify/types";
 import { getIconData, iconToSVG, replaceIDs } from "@iconify/utils";
 import logos from "@iconify-json/logos/icons.json";
 import simpleIcons from "@iconify-json/simple-icons/icons.json";
-import solar from "@iconify-json/solar/icons.json";
+import tabler from "@iconify-json/tabler/icons.json";
 
-// Solar (interface icons, CC BY 4.0, 480 Design), SVG Logos (CC0) and
-// Simple Icons (CC0; single-color brand marks drawn with currentColor).
+// Tabler (interface icons, MIT), SVG Logos (CC0) and Simple Icons (CC0;
+// single-color brand marks drawn with currentColor). None needs on-page credit.
 // Rendered to inline SVG on the server, so no icon code ships to the browser.
 const sets: Record<string, IconifyJSON> = {
   logos: logos as IconifyJSON,
   "simple-icons": simpleIcons as IconifyJSON,
-  solar: solar as IconifyJSON,
+  tabler: tabler as IconifyJSON,
 };
 
 type Props = {
-  /** "prefix:name", e.g. "solar:arrow-right-up-linear" or "logos:react". */
+  /** "prefix:name", e.g. "tabler:arrow-up-right" or "logos:react". */
   name: string;
   size?: number | string;
   className?: string;

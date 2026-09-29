@@ -10,25 +10,7 @@ export type Star = {
   r: number;
   twinkleSpeed: number;
   phase: number;
-  /** Index into STAR_TINTS: real stars range from blue-white to orange. */
-  tint: number;
 };
-
-/**
- * Star colors by spectral class, weighted roughly as the eye sees them:
- * mostly white and blue-white, some pale yellow, a few orange.
- */
-export const STAR_TINTS = ["255,255,255", "205,222,255", "255,244,224", "255,214,170"] as const;
-const TINT_WEIGHTS = [0.42, 0.3, 0.18, 0.1];
-
-function pickTint(r: number): number {
-  let acc = 0;
-  for (let i = 0; i < TINT_WEIGHTS.length; i++) {
-    acc += TINT_WEIGHTS[i];
-    if (r < acc) return i;
-  }
-  return 0;
-}
 
 export type Dust = {
   x: number;
@@ -40,6 +22,9 @@ export type Dust = {
   life: number;
   size: number;
   hue: 0 | 1 | 2;
+  /** Sparkle: each mote shimmers at its own rate. */
+  sparkleSpeed: number;
+  phase: number;
 };
 
 export type Streak = {
@@ -59,12 +44,9 @@ export type Satellite = {
   vy: number;
 };
 
-/**
- * The photographed Milky Way already supplies the dense background, so the
- * live layer only needs a sparse set of nearer stars: about one per 7,000 px².
- */
+/** Roughly one star per 2,600 px², capped so huge screens stay cheap. */
 export function starCount(width: number, height: number): number {
-  return Math.min(320, Math.round((width * height) / 7000));
+  return Math.min(900, Math.round((width * height) / 2600));
 }
 
 export function createStars(width: number, height: number, rng: Rng = Math.random): Star[] {
@@ -75,11 +57,9 @@ export function createStars(width: number, height: number, rng: Rng = Math.rando
       x: rng() * width,
       y: rng() * height,
       z,
-      r: 0.3 + z * 1.1,
-      // Scintillation is subtle and slow for most stars.
-      twinkleSpeed: 0.3 + rng() * 1.1,
+      r: 0.35 + z * 1.25,
+      twinkleSpeed: 0.4 + rng() * 1.6,
       phase: rng() * Math.PI * 2,
-      tint: pickTint(rng()),
     };
   });
 }
@@ -89,12 +69,20 @@ export function wrap(value: number, size: number): number {
   return ((value % size) + size) % size;
 }
 
-/** How many dust motes to emit for a pointer move of `distance` px. */
+/**
+ * How many motes to emit for a pointer move of `distance` px. Fine dust means
+ * many small motes: about one every 3 px, fewer for touch.
+ */
 export function dustToEmit(distance: number, coarsePointer: boolean): number {
-  const perPixel = coarsePointer ? 1 / 14 : 1 / 6;
-  return Math.min(coarsePointer ? 4 : 10, Math.floor(distance * perPixel));
+  const perPixel = coarsePointer ? 1 / 8 : 1 / 3;
+  return Math.min(coarsePointer ? 6 : 16, Math.floor(distance * perPixel));
 }
 
+/**
+ * One mote of stardust. Most are sub-pixel; a few are just big enough to
+ * catch the light. They start almost still, keep a hint of the hand's motion
+ * and live long enough to hang in the air behind the cursor.
+ */
 export function createDust(
   x: number,
   y: number,
@@ -103,45 +91,47 @@ export function createDust(
   rng: Rng = Math.random,
 ): Dust {
   const angle = rng() * Math.PI * 2;
-  const speed = 8 + rng() * 34;
+  const speed = 2 + rng() * 12;
   return {
-    x: x + (rng() - 0.5) * 6,
-    y: y + (rng() - 0.5) * 6,
-    // Inherit a little of the pointer's velocity so the trail flows with the hand.
-    vx: Math.cos(angle) * speed + pointerVx * 0.06,
-    vy: Math.sin(angle) * speed + pointerVy * 0.06,
+    x: x + (rng() - 0.5) * 10,
+    y: y + (rng() - 0.5) * 10,
+    vx: Math.cos(angle) * speed + pointerVx * 0.025,
+    vy: Math.sin(angle) * speed + pointerVy * 0.025,
     age: 0,
-    life: 0.7 + rng() * 1.1,
-    size: 0.6 + rng() * 1.6,
-    hue: rng() < 0.62 ? 0 : rng() < 0.75 ? 1 : 2,
+    life: 1.2 + rng() * 1.6,
+    size: 0.35 + rng() ** 2 * 1.05,
+    hue: rng() < 0.55 ? 1 : rng() < 0.8 ? 0 : 2,
+    sparkleSpeed: 6 + rng() * 10,
+    phase: rng() * Math.PI * 2,
   };
 }
 
 /**
- * Advances one mote by `dt` seconds. Motes slow down, drift upward a touch,
- * and are gently pulled toward the pointer so the dust follows it.
+ * Advances one mote by `dt` seconds: its launch speed bleeds away, then it
+ * wanders slowly and rises a touch, like dust in a light beam.
  * Returns false once the mote has faded out.
  */
-export function stepDust(d: Dust, dt: number, pointerX: number | null, pointerY: number | null): boolean {
+export function stepDust(d: Dust, dt: number, rng: Rng = Math.random): boolean {
   d.age += dt;
   if (d.age >= d.life) return false;
 
-  if (pointerX !== null && pointerY !== null) {
-    d.vx += (pointerX - d.x) * 0.9 * dt;
-    d.vy += (pointerY - d.y) * 0.9 * dt;
-  }
-  const drag = Math.exp(-2.4 * dt);
-  d.vx *= drag;
-  d.vy = d.vy * drag - 6 * dt;
+  const drag = Math.exp(-1.6 * dt);
+  d.vx = d.vx * drag + (rng() - 0.5) * 18 * dt;
+  d.vy = d.vy * drag + (rng() - 0.5) * 18 * dt - 3 * dt;
   d.x += d.vx * dt;
   d.y += d.vy * dt;
   return true;
 }
 
-/** 0 → 1 → 0 over a mote's life: quick fade in, long fade out. */
+/**
+ * Brightness over a mote's life: a quick fade in, then a long, easing fade
+ * out, with a shimmer on top so the dust glitters rather than glows.
+ */
 export function dustAlpha(d: Dust): number {
   const t = d.age / d.life;
-  return t < 0.12 ? t / 0.12 : 1 - (t - 0.12) / 0.88;
+  const envelope = t < 0.08 ? t / 0.08 : (1 - (t - 0.08) / 0.92) ** 1.6;
+  const sparkle = 0.6 + 0.4 * Math.sin(d.age * d.sparkleSpeed + d.phase);
+  return envelope * sparkle;
 }
 
 export function createStreak(width: number, height: number, rng: Rng = Math.random): Streak {
