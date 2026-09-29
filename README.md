@@ -2,7 +2,7 @@
 
 Personal portfolio of a senior software engineer, art-directed as a view from orbit: a terminal-style intro types my name, then the site opens on the first light of an orbital sunrise photographed from the ISS.
 
-Design guided by the `apple-design` (Emil Kowalski) and `build-awwwards-quality-sites` (Meng To) skills: size-specific type tracking, a translucent floating nav, press feedback, word-by-word reveals, a scroll-drawn career trajectory, and full reduced-motion / no-JavaScript fallbacks.
+Design guided by the `apple-design` (Emil Kowalski) and `build-awwwards-quality-sites` (Meng To) skills: size-specific type tracking, a translucent floating nav, press feedback, word-by-word reveals, a scroll-drawn career trajectory, a live starfield (drifting stars, shooting stars, a passing satellite, and stardust that follows the pointer), and full reduced-motion / no-JavaScript fallbacks.
 
 **Live:** https://erickkarl.dev · **Components:** https://erickkarl.dev/storybook/
 
@@ -40,7 +40,7 @@ pnpm storybook        # http://localhost:6006
 src/
   app/            layout, page, global tokens, fonts
   assets/media/   NASA photographs (see src/content/media.ts for provenance)
-  components/     Intro, Motion, TechStack, Experience, SectionHeading, SplitWords, Icon, Photo
+  components/     Intro, Motion, SpaceField, TechStack, Experience, SectionHeading, SplitWords, Icon, Photo
   content/        profile.ts — all page content
 .github/workflows ci.yml, deploy.yml
 ```

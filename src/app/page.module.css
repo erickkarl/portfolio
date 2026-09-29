@@ -93,13 +93,24 @@
   display: grid;
   grid-template-rows: 1fr auto;
   overflow: clip;
-  isolation: isolate;
 }
 
-.heroMedia {
+/* Screen blending turns the photo's black sky transparent, so the live stars
+   behind it show through while the atmosphere stays bright. It must blend
+   against the page itself, so no ancestor may isolate it. */
+.heroLayer {
   position: absolute;
   inset: 12vh 0 0;
   z-index: -1;
+}
+.heroMedia {
+  mix-blend-mode: screen;
+}
+.earthSvg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  fill: var(--space);
 }
 .heroParallax {
   position: absolute;
@@ -111,13 +122,6 @@
   height: 100%;
   object-fit: cover;
   object-position: 50% 50%;
-}
-/* Blend the photograph's edges into the page. */
-.heroMedia::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, var(--space) 0%, transparent 18%, transparent 72%, var(--space) 100%);
 }
 
 .heroContent {
@@ -308,13 +312,15 @@
   display: grid;
   grid-template-rows: 1fr auto;
   overflow: clip;
-  isolation: isolate;
   scroll-margin-top: 0;
 }
+/* The photo fades in from the live sky above it. */
 .contactMedia {
   position: absolute;
   inset: 0;
   z-index: -1;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 28%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 28%);
 }
 .contactImg {
   width: 100%;
@@ -327,7 +333,7 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to bottom, var(--space) 0%, rgba(3, 4, 7, 0.55) 30%, rgba(3, 4, 7, 0.35) 60%, var(--space) 100%);
+    linear-gradient(to bottom, rgba(3, 4, 7, 0.55) 30%, rgba(3, 4, 7, 0.35) 60%, var(--space) 100%);
 }
 
 .contactInner {
@@ -402,7 +408,7 @@
   .nav a {
     padding: 8px 11px;
   }
-  .heroMedia {
+  .heroLayer {
     inset: 34vh -40% 0;
   }
 }

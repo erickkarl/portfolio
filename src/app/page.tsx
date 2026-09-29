@@ -4,6 +4,7 @@ import { Intro } from "@/components/Intro/Intro";
 import { Motion } from "@/components/Motion/Motion";
 import { Photo } from "@/components/Photo/Photo";
 import { SectionHeading } from "@/components/SectionHeading/SectionHeading";
+import { SpaceField } from "@/components/SpaceField/SpaceField";
 import { SplitWords } from "@/components/SplitWords/SplitWords";
 import { TechStack } from "@/components/TechStack/TechStack";
 import { aurora, orbitalSunrise } from "@/content/media";
@@ -24,6 +25,7 @@ export default function Home() {
     <>
       <Intro text={profile.intro.text} tagline={profile.intro.tagline} />
       <Motion />
+      <SpaceField />
 
       <header className={styles.header}>
         <a href="#top" className={styles.brand} aria-label={`${profile.name}, back to top`}>
@@ -45,7 +47,16 @@ export default function Home() {
       <main id="top">
         {/* Hero — the first moment of an orbital sunrise. */}
         <section className={styles.hero} aria-labelledby="name" data-hero-section>
-          <div className={styles.heroMedia} data-hero="media">
+          {/* Earth's night side blocks the stars behind it. The shape traces the
+              photo's horizon in the photo's own coordinates (slice = cover). */}
+          <div className={`${styles.heroLayer} ${styles.earthShadow}`} data-hero="media" aria-hidden="true">
+            <div className={styles.heroParallax} data-parallax>
+              <svg viewBox="0 0 1000 562" preserveAspectRatio="xMidYMid slice" className={styles.earthSvg}>
+                <path d="M0 374 Q430 336 1000 398 L1000 562 L0 562 Z" />
+              </svg>
+            </div>
+          </div>
+          <div className={`${styles.heroLayer} ${styles.heroMedia}`} data-hero="media">
             <div className={styles.heroParallax} data-parallax>
               <Photo photo={orbitalSunrise} className={styles.heroImg} priority />
             </div>

@@ -48,9 +48,10 @@ html.lenis body {
   scroll-behavior: auto !important;
 }
 
+/* The page color lives on <html>, so the fixed sky canvas can sit between it
+   and the content. A body background would cover the canvas. */
 body {
   margin: 0;
-  background: var(--space);
   color: var(--ink);
   font: 400 1.0625rem/1.55 var(--f-sans);
   letter-spacing: -0.005em;
