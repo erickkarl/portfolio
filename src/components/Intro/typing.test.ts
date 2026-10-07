@@ -21,8 +21,8 @@ describe("buildTypingSchedule", () => {
 
   it("keeps every keystroke within human range", () => {
     for (const d of buildTypingSchedule(NAME, seeded(2))) {
-      expect(d).toBeGreaterThanOrEqual(55);
-      expect(d).toBeLessThanOrEqual(1000);
+      expect(d).toBeGreaterThanOrEqual(35);
+      expect(d).toBeLessThanOrEqual(600);
     }
   });
 

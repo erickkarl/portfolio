@@ -111,7 +111,9 @@ export default function Home() {
                 <h3 className={styles.subhead}>Things I love</h3>
                 <ul className={styles.likes}>
                   {profile.story.likes.map((like) => (
-                    <li key={like}>{like}</li>
+                    <li key={like.label}>
+                      <span aria-hidden="true">{like.emoji}</span> {like.label}
+                    </li>
                   ))}
                 </ul>
               </div>

@@ -54,12 +54,23 @@ export const profile = {
 
   /** The personal side, from the LinkedIn About section. */
   story: {
-    title: "I've loved technology since I was a kid.",
+    title: "I've loved technology since I was a kid. 🚀",
     paragraphs: [
-      "It started with online games. I built things for them, then moved on to websites, software, and even games of my own design.",
+      "It started with online games 🎮. I built things for them, then moved on to websites, software, and even games of my own design 👾.",
       "That passion never left. It's what made software my career, and it still drives me to keep learning and growing in technology.",
     ],
-    likes: ["Technology", "Online games", "Game design", "Building websites", "Learning new things"],
+    likes: [
+      { emoji: "💻", label: "Technology" },
+      { emoji: "🎮", label: "Online games" },
+      { emoji: "👾", label: "Game design" },
+      { emoji: "🌐", label: "Building websites" },
+      { emoji: "📚", label: "Learning new things" },
+      { emoji: "🎸", label: "Guitar" },
+      { emoji: "🎶", label: "Bass" },
+      { emoji: "🍺", label: "Beer" },
+      { emoji: "🍖", label: "Barbecue" },
+      { emoji: "🏖️", label: "Beach" },
+    ],
   },
 
   about: [

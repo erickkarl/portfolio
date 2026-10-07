@@ -1,11 +1,11 @@
 /** Cursor blink period in ms (one "on" + one "off"). */
-export const BLINK_MS = 700;
+export const BLINK_MS = 480;
 /** How many times the cursor blinks before typing starts. */
 export const IDLE_BLINKS = 3;
 /** Pause after the last key, while the cursor blinks again. */
-export const HOLD_MS = 1400;
+export const HOLD_MS = 700;
 /** Duration of the overlay's exit transition. */
-export const LEAVE_MS = 600;
+export const LEAVE_MS = 450;
 
 /**
  * Delay in ms before each character appears, imitating a person typing:
@@ -14,12 +14,12 @@ export const LEAVE_MS = 600;
  */
 export function buildTypingSchedule(text: string, rng: () => number = Math.random): number[] {
   return Array.from(text, (ch, i) => {
-    if (i === 0) return 120;
+    if (i === 0) return 80;
 
-    let delay = 55 + rng() * 110; // regular keystroke: 55–165 ms
-    if (ch === " ") delay = 140 + rng() * 120; // thumb on the space bar
-    if (text[i - 1] === " ") delay += 120 + rng() * 260; // think before the next word
-    if (rng() < 0.1) delay += 160 + rng() * 220; // occasional hesitation
+    let delay = 35 + rng() * 65; // regular keystroke: 35–100 ms
+    if (ch === " ") delay = 90 + rng() * 70; // thumb on the space bar
+    if (text[i - 1] === " ") delay += 70 + rng() * 130; // think before the next word
+    if (rng() < 0.08) delay += 90 + rng() * 120; // occasional hesitation
 
     return Math.round(delay);
   });

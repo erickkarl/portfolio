@@ -293,7 +293,10 @@
   padding-top: 16px;
 }
 .likes li {
-  padding: 9px 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px 9px 13px;
   border-radius: 999px;
   font-size: 0.9375rem;
   font-weight: 500;
