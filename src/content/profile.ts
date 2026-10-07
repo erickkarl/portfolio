@@ -52,6 +52,16 @@ export const profile = {
   /** One line that sums up the work; shown large at the top of About. */
   statement: "I build software that registry offices, banks and field teams rely on every day.",
 
+  /** The personal side, from the LinkedIn About section. */
+  story: {
+    title: "I've loved technology since I was a kid.",
+    paragraphs: [
+      "It started with online games. I built things for them, then moved on to websites, software, and even games of my own design.",
+      "That passion never left. It's what made software my career, and it still drives me to keep learning and growing in technology.",
+    ],
+    likes: ["Technology", "Online games", "Game design", "Building websites", "Learning new things"],
+  },
+
   about: [
     "I'm a senior software engineer at Witek, building software for several clients across six stacks. Most of my time goes to ONR, the national operator that runs Brazil's electronic property registration system for registry offices across the country, and to ON-RPCN, which is digitizing birth, death and marriage records nationwide.",
     "Before that I helped a bank take two apps from an empty repository to production, led its frontend team, and rebuilt a large sales app for Unilever in React Native.",

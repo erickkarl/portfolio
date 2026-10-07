@@ -21,21 +21,31 @@
 .viewport {
   overflow: hidden;
   padding-block: 10px;
+  border-radius: 999px;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  /* Vertical swipes still scroll the page; sideways ones move the row. */
+  touch-action: pan-y;
   -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
   mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
 }
+.viewport[data-dragging] {
+  cursor: grabbing;
+}
+.viewport:focus-visible {
+  outline: 2px solid var(--atmosphere);
+  outline-offset: 2px;
+}
 
+/* Script drives the track. Without it, a plain CSS drift. */
 .track {
   display: flex;
   width: max-content;
-  animation: drift var(--duration, 40s) linear infinite;
-  animation-direction: var(--direction, normal);
+  will-change: transform;
 }
-
-/* Hover or keyboard focus stops the row so a name can be read. */
-.row:hover .track,
-.row:focus-within .track {
-  animation-play-state: paused;
+:global(html:not(.js)) .track {
+  animation: drift 60s linear infinite;
 }
 
 .set {
@@ -101,9 +111,12 @@
     -webkit-mask-image: none;
     mask-image: none;
   }
+  .viewport {
+    cursor: auto;
+  }
   .track {
     width: auto;
-    animation: none;
+    animation: none !important;
   }
   .set {
     flex-wrap: wrap;

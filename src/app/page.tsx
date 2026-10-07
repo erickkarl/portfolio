@@ -13,6 +13,7 @@ import { profile } from "@/content/profile";
 import styles from "./page.module.css";
 
 const nav = [
+  { href: "#who", label: "Who I am" },
   { href: "#about", label: "About" },
   { href: "#stack", label: "Stack" },
   { href: "#experience", label: "Experience" },
@@ -89,8 +90,33 @@ export default function Home() {
               <span className={styles.statusDot} aria-hidden="true" />
               Now at {profile.company}
             </span>
-            <span className={styles.credit}>{orbitalSunrise.caption}</span>
           </p>
+        </section>
+
+        <section id="who" className={styles.section} aria-labelledby="h-who">
+          <div className={styles.inner}>
+            <p className="eyebrow" data-reveal>
+              Who I am
+            </p>
+            <h2 id="h-who" className={styles.statement} data-reveal-heading>
+              <SplitWords text={profile.story.title} />
+            </h2>
+            <div className={styles.aboutGrid}>
+              <div className={styles.prose} data-reveal>
+                {profile.story.paragraphs.map((p) => (
+                  <p key={p.slice(0, 24)}>{p}</p>
+                ))}
+              </div>
+              <div data-reveal>
+                <h3 className={styles.subhead}>Things I love</h3>
+                <ul className={styles.likes}>
+                  {profile.story.likes.map((like) => (
+                    <li key={like}>{like}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
         </section>
 
         <section id="about" className={styles.section} aria-labelledby="h-about">
@@ -186,7 +212,6 @@ export default function Home() {
               />
             </div>
           </div>
-          <p className={styles.contactCredit}>{aurora.caption}</p>
         </section>
       </main>
 
