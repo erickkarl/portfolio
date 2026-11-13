@@ -144,7 +144,7 @@ export const profile = {
     {
       company: "Witek",
       dates: "May 2024 – now",
-      place: "São Paulo · Remote",
+      place: "Salvador · Remote",
       meta: "Full-stack development · Full-time",
       current: true,
       roles: [
