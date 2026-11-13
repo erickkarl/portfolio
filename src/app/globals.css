@@ -1,31 +1,28 @@
 /*
- * "View from orbit" — a single, deliberate dark theme.
- * Grays follow Apple's dark palette; the one accent is sampled from the
- * atmosphere in the hero photograph.
+ * One dark theme. Near-black sky, warm off-white ink, and a single accent
+ * sampled from the atmosphere in the hero photograph.
  */
 :root {
   color-scheme: dark;
 
   --space: #030407;
-  --space-raised: #0b0d12;
-  --ink: #f5f5f7;
-  --ink-2: #a1a1a6;
-  --ink-3: #6e6e73;
-  --hairline: rgba(255, 255, 255, 0.08);
-  --hairline-strong: rgba(255, 255, 255, 0.16);
+  --ink: #f2f0ea;
+  --ink-2: #b9b7b1;
+  --ink-3: #7d7c78;
+  --hairline: rgba(255, 255, 255, 0.1);
+  --hairline-strong: rgba(255, 255, 255, 0.22);
   --atmosphere: #6fb6ff;
-  --atmosphere-soft: rgba(111, 182, 255, 0.14);
-  --sunrise: #ffcf8a;
 
-  --f-sans: var(--font-geist), -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
-  --f-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --f-serif: var(--font-serif), "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --f-mono: var(--font-mono), ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
-  /* Apple-style critically damped ease for UI, and a softer one for reveals. */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-ui: cubic-bezier(0.25, 0.1, 0.25, 1);
 
-  --gutter: clamp(16px, 4vw, 40px);
+  --gutter: clamp(20px, 4vw, 48px);
   --measure: 1120px;
+  /* Margin column: section labels and dates sit here, content beside it. */
+  --margin-col: 200px;
+  --col-gap: 40px;
 }
 
 *,
@@ -37,15 +34,8 @@
 html {
   -webkit-text-size-adjust: 100%;
   background: var(--space);
-}
-
-/* Lenis owns smooth scrolling when it runs; keep native jumps otherwise. */
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
+  /* The intro locks scrolling; keep the scrollbar's space so nothing shifts. */
+  scrollbar-gutter: stable;
 }
 
 /* The page color lives on <html>, so the fixed sky canvas can sit between it
@@ -53,8 +43,8 @@ html.lenis body {
 body {
   margin: 0;
   color: var(--ink);
-  font: 400 1.0625rem/1.55 var(--f-sans);
-  letter-spacing: -0.005em;
+  font: 400 1.1875rem/1.6 var(--f-serif);
+  font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -66,7 +56,7 @@ a {
 :focus-visible {
   outline: 2px solid var(--atmosphere);
   outline-offset: 4px;
-  border-radius: 6px;
+  border-radius: 2px;
 }
 
 h1,
@@ -75,7 +65,7 @@ h3,
 h4 {
   margin: 0;
   text-wrap: balance;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 p {
@@ -84,7 +74,8 @@ p {
 }
 
 ul,
-dl {
+dl,
+dd {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -107,32 +98,120 @@ img {
   border: 0;
 }
 
-.eyebrow {
-  font: 500 0.75rem/1.4 var(--f-mono);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ink-2);
+/* Small monospace voice: labels, dates, places. */
+.mono {
+  font: 400 0.8125rem/1.5 var(--f-mono);
+  letter-spacing: 0;
+}
+
+/* Text links: a quiet underline that brightens under the pointer. */
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  text-decoration-color: var(--hairline-strong);
+  transition: text-decoration-color 0.2s ease;
+}
+.link:hover {
+  text-decoration-color: var(--atmosphere);
 }
 
 /*
- * Motion hand-off. The boot script adds `.js` before paint so hero pieces can
- * start hidden and be revealed by GSAP. Without script they stay visible; if
- * script loads but never animates, the failsafe shows them anyway.
+ * Motion, all in CSS. The boot script adds `.js` before paint and the intro
+ * sets data-intro="off" when it leaves; that attribute starts the hero
+ * entrance. Without script nothing is ever hidden.
  */
-.js [data-hero] {
-  opacity: 0;
-  animation: hero-failsafe 0s linear 12s forwards;
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* The page stays put under the intro. Unlocks by itself if script stalls. */
+  .js:not([data-intro="off"]) {
+    overflow: hidden;
+    animation: unlock 0s linear 12s forwards;
+  }
+
+  .js [data-hero] {
+    opacity: 0;
+    animation: show 0s linear 12s forwards;
+  }
+  .js[data-intro="off"] [data-hero] {
+    animation: rise 1s var(--ease-out) both;
+    animation-delay: calc(var(--d, 0) * 1ms);
+  }
+  .js[data-intro="off"] [data-hero="media"] {
+    animation: brighten 2.4s var(--ease-out) both;
+  }
+  .js[data-intro="off"] [data-hero="title"] {
+    animation-name: show;
+    animation-duration: 0.01s;
+  }
+  .js [data-hero="title"] [data-word] {
+    transform: translateY(110%);
+  }
+  .js[data-intro="off"] [data-hero="title"] [data-word] {
+    animation: word 1.1s var(--ease-out) both;
+    animation-delay: calc(150ms + var(--i, 0) * 90ms);
+  }
+
+  /* Sections ease in once as they are scrolled to (see Motion.tsx). */
+  .reveal-on [data-reveal] {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 0.9s var(--ease-out),
+      transform 0.9s var(--ease-out);
+  }
+  .reveal-on [data-reveal][data-in] {
+    opacity: 1;
+    transform: none;
+  }
 }
-@keyframes hero-failsafe {
+
+@keyframes unlock {
+  to {
+    overflow: visible;
+  }
+}
+@keyframes show {
   to {
     opacity: 1;
   }
 }
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes brighten {
+  from {
+    opacity: 0;
+    transform: scale(1.06);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes word {
+  from {
+    transform: translateY(110%);
+  }
+  to {
+    transform: none;
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .js [data-hero] {
-    opacity: 1;
-  }
   *,
   *::before,
   *::after {

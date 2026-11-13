@@ -11,13 +11,13 @@ type Props = {
 };
 
 /**
- * The address as selectable text plus a copy button. Copy confirms with
+ * The address as a mail link plus a copy button. Copy confirms with
  * "Copied" for a moment; if the clipboard is unavailable, it selects the
  * address so it can be copied by hand.
  */
 export function CopyEmail({ email, copyIcon, doneIcon }: Props) {
   const [copied, setCopied] = useState(false);
-  const textRef = useRef<HTMLSpanElement>(null);
+  const textRef = useRef<HTMLAnchorElement>(null);
   const timer = useRef<number | undefined>(undefined);
 
   useEffect(() => () => window.clearTimeout(timer.current), []);
@@ -41,9 +41,9 @@ export function CopyEmail({ email, copyIcon, doneIcon }: Props) {
 
   return (
     <div className={styles.row}>
-      <span ref={textRef} className={styles.address}>
+      <a ref={textRef} className={styles.address} href={`mailto:${email}`}>
         {email}
-      </span>
+      </a>
       <button type="button" className={styles.copy} onClick={copy} aria-label={`Copy ${email}`}>
         {copied ? doneIcon : copyIcon}
         <span aria-live="polite">{copied ? "Copied" : "Copy"}</span>

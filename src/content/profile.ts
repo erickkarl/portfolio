@@ -5,13 +5,14 @@ export type Tech = {
   name: string;
   /**
    * Iconify name of the technology's official mark. Full-color "logos:" marks
-   * where they read on a dark card; the brand's single-color mark from
-   * "simple-icons:" (shown in white) where the official mark is dark ink.
+   * where they read on a dark page; the brand's single-color mark from
+   * "simple-icons:" (drawn in the text color) where the official mark is dark ink.
    */
   logo: string;
-  /** Brand color, used for the pill's glow. */
-  color: string;
 };
+
+/** File name of a technology's logo under /logos (written by scripts/logos.ts). */
+export const logoFile = (logo: string) => `${logo.replace(":", "-")}.svg`;
 
 export type TechGroup = {
   title: string;
@@ -41,13 +42,18 @@ export const profile = {
   intro: { text: "Erick Karl", tagline: "Software Engineer" },
   firstName: "Erick",
   role: "Senior Software Engineer",
-  location: "São Paulo, Brazil",
+  location: "Salvador, Brazil",
   company: "Witek",
+  /** The hero's one paragraph. */
   headline:
-    "I build web, mobile and cloud products with React, Next.js, Node, TypeScript and AWS.",
+    "Senior software engineer in Salvador, Brazil, currently at Witek. I build web, mobile and cloud products with React, Next.js, Node, TypeScript and AWS.",
   email: "erickkarl5@gmail.com",
   linkedin: "https://www.linkedin.com/in/erick-kva",
   github: "https://github.com/erickkarl",
+  /** This site's source. */
+  repo: "https://github.com/erickkarl/portfolio",
+  /** Where the hero's clock and coordinates point. */
+  place: { timeZone: "America/Bahia", coordinates: "12.97° S, 38.50° W", city: "Salvador" },
 
   /** One line that sums up the work; shown large at the top of About. */
   statement: "I build software that registry offices, banks and field teams rely on every day.",
@@ -57,7 +63,7 @@ export const profile = {
     title: "I've loved technology since I was a kid. 🚀",
     paragraphs: [
       "It started with online games 🎮. I built things for them, then moved on to websites, software, and even games of my own design 👾.",
-      "That passion never left. It's what made software my career, and it still drives me to keep learning and growing in technology.",
+      "I never really stopped. It became my career, and I still get the same pull to keep learning that I had back then.",
     ],
     likes: [
       { emoji: "💻", label: "Technology" },
@@ -98,38 +104,38 @@ export const profile = {
     {
       title: "Frontend & mobile",
       items: [
-        { name: "React", logo: "logos:react", color: "#61DAFB" },
-        { name: "Next.js", logo: "simple-icons:nextdotjs", color: "#FFFFFF" },
-        { name: "React Native", logo: "logos:react", color: "#61DAFB" },
-        { name: "TypeScript", logo: "logos:typescript-icon", color: "#3178C6" },
-        { name: "Vue", logo: "logos:vue", color: "#42B883" },
-        { name: "Tailwind CSS", logo: "logos:tailwindcss-icon", color: "#38BDF8" },
-        { name: "Redux Toolkit", logo: "logos:redux", color: "#764ABC" },
-        { name: "Storybook", logo: "logos:storybook-icon", color: "#FF4785" },
+        { name: "React", logo: "logos:react" },
+        { name: "Next.js", logo: "simple-icons:nextdotjs" },
+        { name: "React Native", logo: "logos:react" },
+        { name: "TypeScript", logo: "logos:typescript-icon" },
+        { name: "Vue", logo: "logos:vue" },
+        { name: "Tailwind CSS", logo: "logos:tailwindcss-icon" },
+        { name: "Redux Toolkit", logo: "logos:redux" },
+        { name: "Storybook", logo: "logos:storybook-icon" },
       ],
     },
     {
       title: "Backend",
       items: [
-        { name: "Node.js", logo: "logos:nodejs-icon", color: "#5FA04E" },
-        { name: "Express", logo: "simple-icons:express", color: "#FFFFFF" },
-        { name: "NestJS", logo: "logos:nestjs", color: "#E0234E" },
-        { name: "Django Ninja", logo: "simple-icons:django", color: "#44B78B" },
-        { name: "Python", logo: "logos:python", color: "#3776AB" },
-        { name: "PostgreSQL", logo: "logos:postgresql", color: "#4169E1" },
-        { name: "MongoDB", logo: "logos:mongodb-icon", color: "#47A248" },
-        { name: "DynamoDB", logo: "logos:aws-dynamodb", color: "#4053D6" },
+        { name: "Node.js", logo: "logos:nodejs-icon" },
+        { name: "Express", logo: "simple-icons:express" },
+        { name: "NestJS", logo: "logos:nestjs" },
+        { name: "Django Ninja", logo: "simple-icons:django" },
+        { name: "Python", logo: "logos:python" },
+        { name: "PostgreSQL", logo: "logos:postgresql" },
+        { name: "MongoDB", logo: "logos:mongodb-icon" },
+        { name: "DynamoDB", logo: "logos:aws-dynamodb" },
       ],
     },
     {
       title: "Cloud & delivery",
       items: [
-        { name: "AWS", logo: "simple-icons:amazonwebservices", color: "#FF9900" },
-        { name: "Docker", logo: "logos:docker-icon", color: "#2496ED" },
-        { name: "Kubernetes", logo: "logos:kubernetes", color: "#326CE5" },
-        { name: "GitHub Actions", logo: "logos:github-actions", color: "#2088FF" },
-        { name: "Datadog", logo: "logos:datadog-icon", color: "#7C4DDB" },
-        { name: "Sentry", logo: "simple-icons:sentry", color: "#A78BFA" },
+        { name: "AWS", logo: "simple-icons:amazonwebservices" },
+        { name: "Docker", logo: "logos:docker-icon" },
+        { name: "Kubernetes", logo: "logos:kubernetes" },
+        { name: "GitHub Actions", logo: "logos:github-actions" },
+        { name: "Datadog", logo: "logos:datadog-icon" },
+        { name: "Sentry", logo: "simple-icons:sentry" },
       ],
     },
   ] satisfies TechGroup[],

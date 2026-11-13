@@ -1,4 +1,4 @@
-/* ---------- Chrome: floating translucent navigation ---------- */
+/* ---------- Header: a prompt and plain links ---------- */
 .header {
   position: fixed;
   z-index: 40;
@@ -7,19 +7,20 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: calc(14px + env(safe-area-inset-top, 0px)) var(--gutter) 14px;
+  padding: calc(18px + env(safe-area-inset-top, 0px)) var(--gutter) 18px;
+  font: 400 0.8125rem/1 var(--f-mono);
   pointer-events: none;
 }
 .header > * {
   pointer-events: auto;
 }
-/* Scroll edge effect: content fades out under the chrome instead of a hard bar. */
+/* Content fades out under the header instead of meeting a hard bar. */
 .header::before {
   content: "";
   position: absolute;
-  inset: 0 0 -24px;
+  inset: 0 0 -28px;
   z-index: -1;
-  background: linear-gradient(to bottom, var(--space) 0%, rgba(3, 4, 7, 0.85) 45%, transparent 100%);
+  background: linear-gradient(to bottom, var(--space) 0%, rgba(3, 4, 7, 0.88) 50%, transparent 100%);
   pointer-events: none;
 }
 
@@ -27,7 +28,8 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font: 500 0.9375rem/1 var(--f-mono);
+  min-height: 44px;
+  font-size: 0.9375rem;
   text-decoration: none;
   color: var(--ink);
 }
@@ -41,50 +43,20 @@
   background: var(--atmosphere);
 }
 
-/* Apple material: translucent, bright top edge, content scrolls beneath. */
-.navBar {
-  border-radius: 999px;
-  background: rgba(22, 24, 30, 0.55);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  box-shadow:
-    inset 0 0.5px 0 rgba(255, 255, 255, 0.18),
-    inset 0 0 0 0.5px rgba(255, 255, 255, 0.08),
-    0 8px 32px rgba(0, 0, 0, 0.4);
-}
 .nav {
   display: flex;
-  gap: 2px;
-  padding: 4px;
+  gap: clamp(12px, 2.4vw, 28px);
 }
 .nav a {
   display: block;
-  padding: 8px 14px;
-  border-radius: 999px;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  letter-spacing: 0.005em;
+  padding-block: 15px;
   color: var(--ink-2);
   white-space: nowrap;
   text-decoration: none;
-  transition:
-    color 0.2s var(--ease-ui),
-    background-color 0.2s var(--ease-ui);
+  transition: color 0.2s ease;
 }
 .nav a:hover {
   color: var(--ink);
-  background: rgba(255, 255, 255, 0.08);
-}
-.nav a:active {
-  background: rgba(255, 255, 255, 0.14);
-}
-
-@media (prefers-reduced-transparency: reduce) {
-  .navBar {
-    background: #16181e;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
 }
 
 /* ---------- Hero ---------- */
@@ -101,7 +73,7 @@
    against the page itself, so no ancestor may isolate it. */
 .heroLayer {
   position: absolute;
-  inset: 12vh 0 0;
+  inset: 16vh 0 0;
   z-index: -1;
 }
 .heroMedia {
@@ -116,7 +88,6 @@
 .heroParallax {
   position: absolute;
   inset: 0;
-  will-change: transform;
 }
 .heroImg {
   width: 100%;
@@ -125,201 +96,154 @@
   object-position: 50% 50%;
 }
 
+/* Leaving orbit: the planet sinks away as the page scrolls. Browsers without
+   scroll-driven animations simply keep it still. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    .heroParallax {
+      animation: sink linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 100vh;
+      will-change: transform;
+    }
+  }
+}
+@keyframes sink {
+  to {
+    transform: translateY(16%) scale(1.05);
+  }
+}
+
 .heroContent {
   width: min(100% - 2 * var(--gutter), var(--measure));
   margin-inline: auto;
-  padding-top: clamp(120px, 20vh, 200px);
+  padding-top: clamp(112px, 19vh, 190px);
   display: grid;
   align-content: start;
-  gap: 24px;
+  gap: 28px;
 }
 
 .name {
-  font-size: clamp(3rem, 8.4vw, 7.5rem);
-  line-height: 0.96;
-  letter-spacing: -0.045em;
-  font-weight: 600;
-  padding-bottom: 0.05em;
-}
-/* Each word is its own transformed box, so each carries the gradient. */
-.name [data-word] {
-  background: linear-gradient(180deg, #ffffff 30%, #aab4c3 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  font-size: clamp(3.25rem, 10.5vw, 8.25rem);
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  /* Sits on the left edge optically: the E's serif would otherwise look inset. */
+  margin-left: -0.04em;
 }
 
 .lede {
-  max-width: 34ch;
-  font-size: clamp(1.1875rem, 2vw, 1.5rem);
+  max-width: 30em;
+  font-size: clamp(1.25rem, 2.1vw, 1.5rem);
   line-height: 1.4;
-  letter-spacing: -0.014em;
   color: var(--ink-2);
 }
 
-.actions {
+.links {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  padding-top: 8px;
+  gap: 4px 28px;
 }
-
-.btnPrimary,
-.btnSecondary {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+.links a {
   min-height: 44px;
-  padding: 0 22px;
-  border-radius: 999px;
-  font-size: 0.9375rem;
-  font-weight: 500;
-  letter-spacing: -0.005em;
-  text-decoration: none;
-  transition:
-    transform 0.1s ease-out,
-    background-color 0.2s var(--ease-ui),
-    box-shadow 0.2s var(--ease-ui);
-}
-.btnPrimary {
-  background: var(--ink);
-  color: #000;
-}
-.btnPrimary:hover {
-  background: #fff;
-  box-shadow: 0 0 32px rgba(111, 182, 255, 0.35);
-}
-.btnSecondary {
-  color: var(--ink);
-  box-shadow: inset 0 0 0 1px var(--hairline-strong);
-}
-.btnSecondary:hover {
-  background: rgba(255, 255, 255, 0.07);
-}
-/* Feedback on press, not on release. */
-.btnPrimary:active,
-.btnSecondary:active {
-  transform: scale(0.97);
 }
 
-.heroCaption {
+.heroFoot {
   width: min(100% - 2 * var(--gutter), var(--measure));
   margin: 0 auto;
-  padding-block: 32px calc(28px + env(safe-area-inset-bottom, 0px));
+  padding-block: 32px calc(24px + env(safe-area-inset-bottom, 0px));
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  gap: 10px 24px;
-  font: 400 0.75rem/1.5 var(--f-mono);
+  gap: 4px 24px;
   color: var(--ink-3);
-}
-.status {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--ink-2);
-}
-.statusDot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--atmosphere);
-  box-shadow: 0 0 10px var(--atmosphere);
+  font-variant-numeric: tabular-nums;
 }
 
-/* ---------- Sections ---------- */
+/* ---------- Sections: a name in the margin, content beside it ---------- */
 .section {
-  padding-block: clamp(96px, 14vw, 180px);
-  scroll-margin-top: 24px;
+  padding-block: clamp(72px, 11vw, 140px);
+  scroll-margin-top: 16px;
 }
 
-.inner {
+.grid {
   width: min(100% - 2 * var(--gutter), var(--measure));
   margin-inline: auto;
+  display: grid;
+  grid-template-columns: var(--margin-col) minmax(0, 1fr);
+  gap: 20px var(--col-gap);
+}
+
+.label {
+  position: sticky;
+  top: 84px;
+  align-self: start;
+  padding-top: 0.75em;
+  color: var(--ink-3);
+}
+
+/* Wide sections put their own notes in the margin, so the name scrolls away. */
+.grid:has(> .wide) .label {
+  position: static;
+}
+
+.content {
+  display: grid;
+  gap: clamp(28px, 4vw, 44px);
+  max-width: 44rem;
+}
+.wide {
+  grid-column: 1 / -1;
+  min-width: 0;
 }
 
 .statement {
-  margin-top: 18px;
-  font-size: clamp(2rem, 4.6vw, 3.75rem);
-  line-height: 1.08;
-  letter-spacing: -0.032em;
-  font-weight: 600;
-  max-width: 20ch;
-}
-
-.aboutGrid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-  gap: 56px clamp(40px, 7vw, 112px);
-  margin-top: clamp(48px, 7vw, 88px);
+  font-size: clamp(1.875rem, 4.2vw, 3rem);
+  line-height: 1.12;
+  letter-spacing: -0.022em;
+  text-wrap: balance;
 }
 
 .prose {
   display: grid;
-  gap: 20px;
-  max-width: 58ch;
-  font-size: 1.125rem;
-  line-height: 1.6;
+  gap: 1em;
+  max-width: 36em;
   color: var(--ink-2);
 }
 
-.aboutAside {
-  display: grid;
-  gap: 48px;
-  align-content: start;
-}
-
-.subhead {
-  font: 500 0.75rem/1.4 var(--f-mono);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+.sublabel {
   color: var(--ink-3);
-  padding-bottom: 12px;
-  margin-bottom: 4px;
-  border-bottom: 1px solid var(--hairline-strong);
+  margin-bottom: 10px;
 }
 
-.focus li {
-  padding-block: 12px;
-  border-bottom: 1px solid var(--hairline);
-  font-size: 0.975rem;
-  line-height: 1.45;
-}
-
+/* Likes read as a line of text, each with its emoji. */
 .likes {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  padding-top: 16px;
+  gap: 6px 26px;
+  font-size: 1.25rem;
 }
 .likes li {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 9px 16px 9px 13px;
-  border-radius: 999px;
-  font-size: 0.9375rem;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  background: rgba(14, 16, 22, 0.86);
-  box-shadow:
-    inset 0 0.5px 0 rgba(255, 255, 255, 0.12),
-    inset 0 0 0 1px var(--hairline);
+  white-space: nowrap;
 }
 
-.domains > div {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  padding-block: 12px;
-  border-bottom: 1px solid var(--hairline);
-  font-size: 0.975rem;
+.lists {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px var(--col-gap);
 }
-.domains dd {
-  margin: 0;
-  font: 400 0.8125rem/1.5 var(--f-mono);
+
+.rows {
+  border-top: 1px solid var(--hairline-strong);
+  font-size: 1.0625rem;
+  line-height: 1.45;
+}
+.rows > * {
+  padding-block: 11px;
+  border-bottom: 1px solid var(--hairline);
+}
+.rows dd {
   color: var(--ink-3);
-  text-align: right;
+  padding-top: 2px;
 }
 
 /* ---------- Contact: the night side ---------- */
@@ -327,9 +251,9 @@
   position: relative;
   min-height: 100svh;
   display: grid;
-  grid-template-rows: 1fr auto;
+  align-items: center;
   overflow: clip;
-  scroll-margin-top: 0;
+  padding-block: 160px 80px;
 }
 /* The photo fades in from the live sky above it. */
 .contactMedia {
@@ -349,55 +273,53 @@
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(to bottom, rgba(3, 4, 7, 0.55) 30%, rgba(3, 4, 7, 0.35) 60%, var(--space) 100%);
+  background: linear-gradient(to bottom, rgba(3, 4, 7, 0.55) 30%, rgba(3, 4, 7, 0.4) 60%, var(--space) 100%);
 }
-
-.contactInner {
-  width: min(100% - 2 * var(--gutter), var(--measure));
-  margin-inline: auto;
-  align-self: center;
-  display: grid;
-  gap: 22px;
-  padding-block: 160px 40px;
-}
-.contactTitle {
-  font-size: clamp(2.75rem, 7.4vw, 6.25rem);
-  line-height: 0.98;
-  letter-spacing: -0.045em;
-  font-weight: 600;
-  max-width: 12ch;
-}
-.contactText {
-  max-width: 44ch;
-  font-size: 1.1875rem;
-  line-height: 1.5;
+.contactGrid .label {
+  position: static;
   color: var(--ink-2);
 }
+.contactGrid .content {
+  gap: 20px;
+  max-width: none;
+}
+.contactText {
+  max-width: 24em;
+  font-size: clamp(1.25rem, 2.1vw, 1.5rem);
+  line-height: 1.4;
+  color: var(--ink-2);
+}
+
 /* ---------- Footer ---------- */
 .footer {
   border-top: 1px solid var(--hairline);
-  padding-block: 28px calc(28px + env(safe-area-inset-bottom, 0px));
+  padding-block: 20px calc(20px + env(safe-area-inset-bottom, 0px));
 }
 .footerInner {
   width: min(100% - 2 * var(--gutter), var(--measure));
   margin-inline: auto;
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: space-between;
-  gap: 8px 32px;
-  font-size: 0.8125rem;
-  line-height: 1.5;
+  gap: 4px 32px;
   color: var(--ink-3);
 }
 .footerInner a {
+  min-height: 44px;
   color: var(--ink-2);
-  text-underline-offset: 3px;
 }
 
-/* ---------- Narrow screens ---------- */
-@media (max-width: 860px) {
-  .aboutGrid {
+/* ---------- Narrow screens: the margin column folds above the content ---------- */
+@media (max-width: 760px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .label {
+    position: static;
+    padding-top: 0;
+  }
+  .lists {
     grid-template-columns: 1fr;
   }
 }
@@ -408,12 +330,15 @@
   }
   .header {
     justify-content: center;
-  }
-  .nav a {
-    padding: 8px 8px;
     font-size: 0.75rem;
   }
   .heroLayer {
-    inset: 34vh -40% 0;
+    inset: 38vh -40% 0;
+  }
+}
+
+@media (max-width: 359px) {
+  .nav li:nth-child(3) {
+    display: none;
   }
 }

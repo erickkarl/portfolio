@@ -1,6 +1,5 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
-import { profile } from "@/content/profile";
 import { Icon } from "./Icon";
 
 afterEach(cleanup);
@@ -14,18 +13,11 @@ describe("Icon", () => {
   });
 
   it("exposes a labelled icon as an image", () => {
-    render(<Icon name="logos:react" label="React" />);
-    expect(screen.getByRole("img", { name: "React" })).toBeTruthy();
+    render(<Icon name="tabler:mail" label="Email" />);
+    expect(screen.getByRole("img", { name: "Email" })).toBeTruthy();
   });
 
   it("fails loudly on a name that does not exist", () => {
-    expect(() => render(<Icon name="logos:not-a-real-logo" />)).toThrow(/Unknown icon/);
-  });
-
-  it("resolves every technology logo used on the page", () => {
-    for (const tech of profile.stack.flatMap((g) => g.items)) {
-      expect(() => render(<Icon name={tech.logo} />), tech.name).not.toThrow();
-      cleanup();
-    }
+    expect(() => render(<Icon name="tabler:not-a-real-icon" />)).toThrow(/Unknown icon/);
   });
 });

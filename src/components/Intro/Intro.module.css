@@ -13,7 +13,8 @@
   animation: failsafe 0s linear 12s forwards;
 }
 
-:global([data-intro="off"]) .intro {
+:global([data-intro="off"]) .intro,
+:global(html:not(.js)) .intro {
   display: none;
 }
 
@@ -35,7 +36,7 @@
   align-items: center;
   justify-content: center;
   max-width: min(92vw, 1100px);
-  font: 500 clamp(30px, 7vw, 72px) / 1.2 var(--f-mono);
+  font: 400 clamp(30px, 7vw, 72px) / 1.2 var(--f-mono);
   letter-spacing: -0.01em;
   color: var(--ink);
 }
@@ -46,7 +47,7 @@
 
 /* Reserved from the start so the name doesn't jump when it appears. */
 .tagline {
-  font: 500 clamp(12px, 1.6vw, 15px) / 1.4 var(--f-mono);
+  font: 400 clamp(12px, 1.6vw, 15px) / 1.4 var(--f-mono);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--ink-2);
@@ -81,9 +82,9 @@
   appearance: none;
   background: none;
   border: 1px solid var(--hairline-strong);
-  border-radius: 999px;
-  padding: 8px 14px;
-  font: 500 13px/1 var(--f-sans);
+  border-radius: 4px;
+  padding: 9px 12px;
+  font: 400 12px/1 var(--f-mono);
   color: var(--ink-2);
   cursor: pointer;
 }

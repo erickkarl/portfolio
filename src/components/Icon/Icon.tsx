@@ -1,20 +1,16 @@
 import type { IconifyJSON } from "@iconify/types";
 import { getIconData, iconToSVG, replaceIDs } from "@iconify/utils";
-import logos from "@iconify-json/logos/icons.json";
-import simpleIcons from "@iconify-json/simple-icons/icons.json";
 import tabler from "@iconify-json/tabler/icons.json";
 
-// Tabler (interface icons, MIT), SVG Logos (CC0) and Simple Icons (CC0;
-// single-color brand marks drawn with currentColor). None needs on-page credit.
-// Rendered to inline SVG on the server, so no icon code ships to the browser.
+// Tabler interface icons (MIT, no credit needed), rendered to inline SVG on
+// the server so no icon code ships to the browser. Technology logos are not
+// here: they are static files, see scripts/logos.ts.
 const sets: Record<string, IconifyJSON> = {
-  logos: logos as IconifyJSON,
-  "simple-icons": simpleIcons as IconifyJSON,
   tabler: tabler as IconifyJSON,
 };
 
 type Props = {
-  /** "prefix:name", e.g. "tabler:arrow-up-right" or "logos:react". */
+  /** "prefix:name", e.g. "tabler:arrow-up-right". */
   name: string;
   size?: number | string;
   className?: string;
@@ -22,13 +18,16 @@ type Props = {
   label?: string;
 };
 
-export function Icon({ name, size = "1em", className, label }: Props) {
+function resolve(name: string, size: number | string) {
   const [prefix, iconName] = name.split(":");
   const set = sets[prefix];
   const data = set ? getIconData(set, iconName) : null;
   if (!data) throw new Error(`Unknown icon "${name}"`);
+  return iconToSVG(data, { height: size });
+}
 
-  const { attributes, body } = iconToSVG(data, { height: size });
+export function Icon({ name, size = "1em", className, label }: Props) {
+  const { attributes, body } = resolve(name, size);
 
   return (
     <svg

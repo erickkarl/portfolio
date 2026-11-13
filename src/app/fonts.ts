@@ -1,14 +1,19 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { JetBrains_Mono, Newsreader } from "next/font/google";
 
-const geist = Geist({
-  variable: "--font-geist",
+// Two voices: a serif for everything a person says, and the monospace of a
+// terminal for the prompt, dates and labels. The serif loads without its
+// optical-size axis: with it the file is almost four times the size.
+const serif = Newsreader({
+  variable: "--font-serif",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const mono = JetBrains_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 /** Class names that define the --font-* variables used by globals.css. */
-export const fontVariables = `${geist.variable} ${geistMono.variable}`;
+export const fontVariables = `${serif.variable} ${mono.variable}`;

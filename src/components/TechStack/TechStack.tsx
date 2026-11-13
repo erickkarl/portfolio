@@ -1,6 +1,5 @@
-import type { CSSProperties } from "react";
-import { Icon } from "@/components/Icon/Icon";
-import type { Tech, TechGroup } from "@/content/profile";
+import { publicPath } from "@/content/paths";
+import { logoFile, type Tech, type TechGroup } from "@/content/profile";
 import { Marquee } from "./Marquee";
 import styles from "./TechStack.module.css";
 
@@ -8,17 +7,23 @@ type Props = {
   groups: TechGroup[];
 };
 
-/** Each loop needs at least this many pills so short groups still fill the row. */
+/** Each loop needs at least this many items so short groups still fill the row. */
 const MIN_PER_LOOP = 12;
 
-function Pill({ tech, hidden }: { tech: Tech; hidden?: boolean }) {
+function Item({ tech, hidden }: { tech: Tech; hidden?: boolean }) {
   return (
-    <li
-      className={styles.pill}
-      style={{ "--brand": tech.color } as CSSProperties}
-      aria-hidden={hidden || undefined}
-    >
-      <Icon name={tech.logo} size={22} className={styles.logo} />
+    <li className={styles.item} aria-hidden={hidden || undefined}>
+      {/* eslint-disable-next-line @next/next/no-img-element -- a static SVG file, nothing to optimize */}
+      <img
+        className={styles.logo}
+        src={publicPath(`/logos/${logoFile(tech.logo)}`)}
+        alt=""
+        width={22}
+        height={22}
+        loading="lazy"
+        decoding="async"
+        draggable={false}
+      />
       <span>{tech.name}</span>
     </li>
   );
@@ -44,7 +49,7 @@ export function TechStack({ groups }: Props) {
                 <ul key={half} className={styles.set} aria-hidden={half === 1 || undefined}>
                   {loop.map((r) =>
                     group.items.map((tech) => (
-                      <Pill key={`${r}-${tech.name}`} tech={tech} hidden={half === 0 && r > 0} />
+                      <Item key={`${r}-${tech.name}`} tech={tech} hidden={half === 0 && r > 0} />
                     )),
                   )}
                 </ul>

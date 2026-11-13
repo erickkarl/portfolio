@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { type CSSProperties, Fragment } from "react";
 import styles from "./SplitWords.module.css";
 
 type Props = {
@@ -19,7 +19,7 @@ export function SplitWords({ text }: Props) {
         {words.map((word, i) => (
           <Fragment key={i}>
             <span className={styles.word}>
-              <span className={styles.inner} data-word>
+              <span className={styles.inner} data-word style={{ "--i": i } as CSSProperties}>
                 {word}
               </span>
             </span>

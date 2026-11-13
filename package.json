@@ -10,12 +10,11 @@
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
+    "logos": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/logos.ts",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
   "dependencies": {
-    "gsap": "^3.15.0",
-    "lenis": "^1.3.26",
     "next": "16.3.6",
     "react": "19.2.8",
     "react-dom": "19.2.8"

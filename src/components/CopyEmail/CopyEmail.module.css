@@ -1,15 +1,24 @@
 .row {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 14px;
+  align-items: baseline;
+  gap: 6px 20px;
 }
 
+/* The address is the contact section's headline. */
 .address {
-  font: 400 0.9375rem/1.4 var(--f-mono);
-  color: var(--ink-2);
-  user-select: all;
-  word-break: break-all;
+  font-size: clamp(1.75rem, 5.4vw, 4rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  word-break: break-word;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.14em;
+  text-decoration-color: var(--hairline-strong);
+  transition: text-decoration-color 0.2s ease;
+}
+.address:hover {
+  text-decoration-color: var(--atmosphere);
 }
 
 .copy {
@@ -17,25 +26,15 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-height: 32px;
-  padding: 0 12px;
+  min-height: 44px;
+  padding: 0;
   border: 0;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
-  box-shadow: inset 0 0 0 1px var(--hairline-strong);
+  background: none;
   color: var(--ink-2);
-  font: 500 0.8125rem/1 var(--f-sans);
+  font: 400 0.8125rem/1 var(--f-mono);
   cursor: pointer;
-  transition:
-    transform 0.1s ease-out,
-    background-color 0.2s var(--ease-ui),
-    color 0.2s var(--ease-ui);
+  transition: color 0.2s ease;
 }
 .copy:hover {
   color: var(--ink);
-  background: rgba(255, 255, 255, 0.1);
-}
-/* Feedback on press, not on release. */
-.copy:active {
-  transform: scale(0.96);
 }

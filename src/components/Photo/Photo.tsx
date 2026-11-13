@@ -8,22 +8,32 @@ type Props = {
   sizes?: string;
 };
 
-/** Responsive photograph with explicit dimensions, so layout never shifts. */
+/**
+ * Responsive photograph with explicit dimensions, so layout never shifts.
+ * Browsers that read AVIF get it; the rest get the JPEG. The <picture>
+ * wrapper generates no box, so the image sizes against its own parent.
+ */
 export function Photo({ photo, className, priority = false, sizes = "100vw" }: Props) {
-  const { small, large } = photo;
+  const { small, large, avif } = photo;
   return (
-    // eslint-disable-next-line @next/next/no-img-element -- static export: we ship our own srcset
-    <img
-      className={className}
-      src={large.src}
-      srcSet={`${small.src} ${small.width}w, ${large.src} ${large.width}w`}
-      sizes={sizes}
-      width={large.width}
-      height={large.height}
-      alt={photo.alt}
-      loading={priority ? "eager" : "lazy"}
-      fetchPriority={priority ? "high" : "auto"}
-      decoding="async"
-    />
+    <picture style={{ display: "contents" }}>
+      <source
+        type="image/avif"
+        srcSet={`${avif.small} ${small.width}w, ${avif.large} ${large.width}w`}
+        sizes={sizes}
+      />
+      <img
+        className={className}
+        src={large.src}
+        srcSet={`${small.src} ${small.width}w, ${large.src} ${large.width}w`}
+        sizes={sizes}
+        width={large.width}
+        height={large.height}
+        alt={photo.alt}
+        loading={priority ? "eager" : "lazy"}
+        fetchPriority={priority ? "high" : "auto"}
+        decoding="async"
+      />
+    </picture>
   );
 }

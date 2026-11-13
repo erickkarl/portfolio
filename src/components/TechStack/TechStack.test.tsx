@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { cleanup, render, screen, within } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 import { profile } from "@/content/profile";
@@ -29,10 +30,16 @@ describe("TechStack", () => {
     });
   });
 
-  it("shows each technology's mark", () => {
+  it("shows each technology's mark from a logo file that exists", () => {
     const { container } = render(<TechStack groups={profile.stack} />);
-    const visible = container.querySelectorAll("ul:not([aria-hidden]) > li:not([aria-hidden]) svg");
+    const marks = container.querySelectorAll<HTMLImageElement>("ul:not([aria-hidden]) > li:not([aria-hidden]) img");
     const total = profile.stack.reduce((n, g) => n + g.items.length, 0);
-    expect(visible).toHaveLength(total);
+    expect(marks).toHaveLength(total);
+
+    for (const img of marks) {
+      // Decorative: the name is right beside it.
+      expect(img.alt).toBe("");
+      expect(existsSync(`public${img.getAttribute("src")}`), img.getAttribute("src")!).toBe(true);
+    }
   });
 });

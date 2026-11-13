@@ -27,11 +27,7 @@ function RoleBody({ role }: { role: Role }) {
 export function Experience({ jobs, footnotes = [] }: Props) {
   return (
     <div className={styles.wrap}>
-      <div className={styles.track} data-trajectory-track>
-        {/* The rail is always visible; the lit line draws over it on scroll. */}
-        <span className={styles.rail} aria-hidden="true" />
-        <span className={styles.line} aria-hidden="true" data-trajectory />
-
+      <div className={styles.jobs}>
         {jobs.map((job) => {
           const single = job.roles.length === 1;
           return (
@@ -40,7 +36,6 @@ export function Experience({ jobs, footnotes = [] }: Props) {
               className={`${styles.job} ${job.current ? styles.current : ""}`}
               data-reveal
             >
-              <span className={styles.node} aria-hidden="true" />
               <div className={styles.when}>
                 <span className={styles.dates}>{job.dates}</span>
                 <span>{job.place}</span>
